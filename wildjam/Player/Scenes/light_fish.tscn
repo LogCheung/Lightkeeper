@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://cffy17k3rvr3l"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lwfa1"]
+
+[node name="LightFish" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+color = Color(1, 1, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_lwfa1")

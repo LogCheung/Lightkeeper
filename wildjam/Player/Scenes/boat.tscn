@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2ja4ar0rki0s"]
+
+[ext_resource type="Texture2D" uid="uid://vsfmcaqovs0p" path="res://Player/Assets/Coffehead.png" id="1_nfw3b"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nfw3b"]
+radius = 4.0
+height = 12.0
+
+[node name="Boat" type="CharacterBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_nfw3b")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_nfw3b")
