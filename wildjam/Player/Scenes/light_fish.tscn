@@ -1,8 +1,22 @@
-[gd_scene load_steps=2 format=3 uid="uid://cffy17k3rvr3l"]
+[gd_scene load_steps=3 format=3 uid="uid://cffy17k3rvr3l"]
+
+[ext_resource type="Script" uid="uid://bxav20tgbds0c" path="res://Player/Scenes/light_fish.gd" id="1_n3lqq"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lwfa1"]
 
-[node name="LightFish" type="CharacterBody2D"]
+[node name="LightFish" type="CharacterBody2D" groups=["FISH"]]
+collision_mask = 0
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_n3lqq")
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+visible = false
+offset_left = -474.0
+offset_top = -266.0
+offset_right = 477.0
+offset_bottom = 363.0
+color = Color(0.0588235, 0.290196, 0.482353, 1)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
@@ -15,3 +29,10 @@ color = Color(1, 1, 0, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_lwfa1")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(0, 0.249998)
+scale = Vector2(0.25, 0.25)
+energy = 16.0
+range_z_max = 512
+shadow_enabled = true

@@ -1,12 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://c2ja4ar0rki0s"]
+[gd_scene load_steps=4 format=3 uid="uid://c2ja4ar0rki0s"]
 
 [ext_resource type="Texture2D" uid="uid://vsfmcaqovs0p" path="res://Player/Assets/Coffehead.png" id="1_nfw3b"]
+[ext_resource type="Script" uid="uid://cnu173j0tv1oc" path="res://Player/Scenes/boat.gd" id="1_u0fnj"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nfw3b"]
 radius = 4.0
 height = 12.0
 
 [node name="Boat" type="CharacterBody2D"]
+collision_mask = 0
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_u0fnj")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_nfw3b")
