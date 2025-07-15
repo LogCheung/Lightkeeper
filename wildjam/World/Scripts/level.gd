@@ -31,7 +31,7 @@ func _ready() -> void:
 			set_cell(pos,0,Vector2i(2,0))
 	
 	await get_tree().create_timer(.1).timeout
-	owner.create_rooms()
+	owner.create_rooms(posArr)
 
 func rand_len(len : int) -> int:
 	var dir : int = 1 if randi() % 2 == 0 else -1

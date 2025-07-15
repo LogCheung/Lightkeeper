@@ -1,10 +1,13 @@
-[gd_scene load_steps=8 format=3 uid="uid://c3qgdpx5jmnge"]
+[gd_scene load_steps=12 format=3 uid="uid://c3qgdpx5jmnge"]
 
 [ext_resource type="PackedScene" uid="uid://cffy17k3rvr3l" path="res://Player/Scenes/light_fish.tscn" id="1_62w18"]
 [ext_resource type="Texture2D" uid="uid://cpwk1bhaku0bp" path="res://TileSet/TestRooms.png" id="1_j8job"]
 [ext_resource type="Script" uid="uid://c01kgptyvgigt" path="res://World/Scripts/world.gd" id="1_k8do8"]
 [ext_resource type="Script" uid="uid://bmdbb7v3pirhi" path="res://World/Scripts/level.gd" id="2_3f78f"]
 [ext_resource type="PackedScene" uid="uid://c2ja4ar0rki0s" path="res://Player/Scenes/boat.tscn" id="2_8a836"]
+[ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_eidgh"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="5_yf0ba"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="6_eidgh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3f78f"]
 texture = ExtResource("1_j8job")
@@ -32,6 +35,12 @@ texture = ExtResource("1_j8job")
 [sub_resource type="TileSet" id="TileSet_k8do8"]
 sources/0 = SubResource("TileSetAtlasSource_3f78f")
 
+[sub_resource type="Resource" id="Resource_oe8m4"]
+script = ExtResource("6_eidgh")
+duration = 1.0
+transition = 0
+ease = 2
+
 [node name="World" type="Node2D"]
 script = ExtResource("1_k8do8")
 
@@ -45,14 +54,35 @@ color = Color(0.376471, 0.807843, 1, 0.403922)
 
 [node name="Layout" type="TileMapLayer" parent="."]
 unique_name_in_owner = true
+position = Vector2(-50, 0)
 tile_set = SubResource("TileSet_k8do8")
 script = ExtResource("2_3f78f")
 
 [node name="RoomsNode" type="Node2D" parent="."]
 
-[node name="LightFish" parent="." instance=ExtResource("1_62w18")]
+[node name="ColShapesNode" type="Node2D" parent="."]
 
-[node name="Camera2D" type="Camera2D" parent="LightFish" groups=["PLAYERCAM"]]
-zoom = Vector2(1.5, 1.5)
+[node name="LightFish" parent="." instance=ExtResource("1_62w18")]
+position = Vector2(224, 222)
+SPEED = 500.0
+
+[node name="Camera2D" type="Camera2D" parent="LightFish"]
+physics_interpolation_mode = 1
+zoom = Vector2(0.5, 0.5)
+
+[node name="PhantomCameraHost" type="Node" parent="LightFish/Camera2D"]
+process_priority = 300
+process_physics_priority = 300
+script = ExtResource("5_eidgh")
+metadata/_custom_type_script = "uid://bd046eokvcnu2"
+
+[node name="PhanCam" type="Node2D" parent="LightFish"]
+unique_name_in_owner = true
+script = ExtResource("5_yf0ba")
+zoom = Vector2(0.5, 0.5)
+tween_resource = SubResource("Resource_oe8m4")
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 
 [node name="Boat" parent="." instance=ExtResource("2_8a836")]
+visible = false
+position = Vector2(215, 132)
