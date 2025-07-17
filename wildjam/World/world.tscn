@@ -1,13 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://c3qgdpx5jmnge"]
+[gd_scene load_steps=14 format=3 uid="uid://c3qgdpx5jmnge"]
 
 [ext_resource type="PackedScene" uid="uid://cffy17k3rvr3l" path="res://Player/Scenes/light_fish.tscn" id="1_62w18"]
 [ext_resource type="Texture2D" uid="uid://cpwk1bhaku0bp" path="res://TileSet/TestRooms.png" id="1_j8job"]
-[ext_resource type="Script" uid="uid://c01kgptyvgigt" path="res://World/Scripts/world.gd" id="1_k8do8"]
+[ext_resource type="Script" uid="uid://c01kgptyvgigt" path="res://World/Scripts/game.gd" id="1_k8do8"]
 [ext_resource type="Script" uid="uid://bmdbb7v3pirhi" path="res://World/Scripts/level.gd" id="2_3f78f"]
 [ext_resource type="PackedScene" uid="uid://c2ja4ar0rki0s" path="res://Player/Scenes/boat.tscn" id="2_8a836"]
 [ext_resource type="Script" uid="uid://bd046eokvcnu2" path="res://addons/phantom_camera/scripts/phantom_camera_host/phantom_camera_host.gd" id="5_eidgh"]
 [ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="5_yf0ba"]
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="6_eidgh"]
+[ext_resource type="PackedScene" uid="uid://b46f4ty88gsfu" path="res://World/camera.tscn" id="6_yf0ba"]
+[ext_resource type="PackedScene" uid="uid://c22i1myeet1ty" path="res://UI/Scenes/mainMenu.tscn" id="9_oe8m4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3f78f"]
 texture = ExtResource("1_j8job")
@@ -35,54 +37,55 @@ texture = ExtResource("1_j8job")
 [sub_resource type="TileSet" id="TileSet_k8do8"]
 sources/0 = SubResource("TileSetAtlasSource_3f78f")
 
-[sub_resource type="Resource" id="Resource_oe8m4"]
+[sub_resource type="Resource" id="Resource_w47uh"]
 script = ExtResource("6_eidgh")
 duration = 1.0
 transition = 0
 ease = 2
 
 [node name="World" type="Node2D"]
+
+[node name="Game" type="Node2D" parent="." groups=["GAMENODE"]]
+process_mode = 2
 script = ExtResource("1_k8do8")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-visible = false
-offset_left = -3856.0
-offset_top = -2425.0
-offset_right = 5246.0
-offset_bottom = 3211.0
-color = Color(0.376471, 0.807843, 1, 0.403922)
-
-[node name="Layout" type="TileMapLayer" parent="."]
+[node name="Layout" type="TileMapLayer" parent="Game"]
 unique_name_in_owner = true
 position = Vector2(-50, 0)
 tile_set = SubResource("TileSet_k8do8")
 script = ExtResource("2_3f78f")
 
-[node name="RoomsNode" type="Node2D" parent="."]
+[node name="RoomsNode" type="Node2D" parent="Game"]
+unique_name_in_owner = true
 
-[node name="ColShapesNode" type="Node2D" parent="."]
+[node name="ColShapesNode" type="Node2D" parent="Game"]
+unique_name_in_owner = true
 
-[node name="LightFish" parent="." instance=ExtResource("1_62w18")]
-position = Vector2(224, 222)
-SPEED = 500.0
+[node name="LightFish" parent="Game" instance=ExtResource("1_62w18")]
+position = Vector2(138, 222)
 
-[node name="Camera2D" type="Camera2D" parent="LightFish"]
+[node name="Boat" parent="Game" instance=ExtResource("2_8a836")]
+position = Vector2(215, 132)
+
+[node name="Camera" parent="Game" instance=ExtResource("6_yf0ba")]
+unique_name_in_owner = true
+
+[node name="Camera2D" type="Camera2D" parent="Game/Camera"]
 physics_interpolation_mode = 1
-zoom = Vector2(0.5, 0.5)
+position = Vector2(0, 3)
 
-[node name="PhantomCameraHost" type="Node" parent="LightFish/Camera2D"]
+[node name="PhantomCameraHost" type="Node" parent="Game/Camera/Camera2D"]
 process_priority = 300
 process_physics_priority = 300
 script = ExtResource("5_eidgh")
 metadata/_custom_type_script = "uid://bd046eokvcnu2"
 
-[node name="PhanCam" type="Node2D" parent="LightFish"]
+[node name="PhanCam" type="Node2D" parent="Game/Camera"]
 unique_name_in_owner = true
+position = Vector2(0, 3)
 script = ExtResource("5_yf0ba")
 zoom = Vector2(0.5, 0.5)
-tween_resource = SubResource("Resource_oe8m4")
+tween_resource = SubResource("Resource_w47uh")
 metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
 
-[node name="Boat" parent="." instance=ExtResource("2_8a836")]
-visible = false
-position = Vector2(215, 132)
+[node name="MainUI" parent="." instance=ExtResource("9_oe8m4")]

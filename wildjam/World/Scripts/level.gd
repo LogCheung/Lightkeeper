@@ -11,7 +11,7 @@ func _ready() -> void:
 	var turn_length = max_rooms / 10
 	
 	var startPos = Vector2.ZERO
-	
+	# 1 2 3 4 5 6 7
 	var cornerOnePos = Vector2(startPos.x, startPos.y - height_separation)
 	var cornerTwoPos = Vector2(startPos.x + rand_len(turn_length), cornerOnePos.y)
 	var cornerThreePos = Vector2(cornerTwoPos.x,cornerTwoPos.y - height_separation)
@@ -31,7 +31,7 @@ func _ready() -> void:
 			set_cell(pos,0,Vector2i(2,0))
 	
 	await get_tree().create_timer(.1).timeout
-	owner.create_rooms(posArr)
+	get_tree().get_first_node_in_group("GAMENODE").create_rooms(posArr,endPos)
 
 func rand_len(len : int) -> int:
 	var dir : int = 1 if randi() % 2 == 0 else -1

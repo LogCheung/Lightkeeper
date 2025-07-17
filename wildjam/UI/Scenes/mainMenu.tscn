@@ -1,0 +1,126 @@
+[gd_scene load_steps=11 format=3 uid="uid://c22i1myeet1ty"]
+
+[ext_resource type="Script" uid="uid://c862j1ugcmaby" path="res://UI/main_menu.gd" id="1_4ni0o"]
+[ext_resource type="Texture2D" uid="uid://bqyymhw84wg0q" path="res://UI/Assets/MainMenu.png" id="1_tjifb"]
+[ext_resource type="Texture2D" uid="uid://h3opk32nkxng" path="res://UI/Assets/LightMeterUnder.png" id="2_uvgop"]
+[ext_resource type="Texture2D" uid="uid://e2ljkvhor488" path="res://UI/Assets/LightMeterOver.png" id="3_1j06g"]
+[ext_resource type="Texture2D" uid="uid://bqt6sl731ydsr" path="res://UI/Assets/UpgradeMenu.png" id="3_aouxq"]
+[ext_resource type="Texture2D" uid="uid://1rfcrqvlveeg" path="res://UI/Assets/LightMeterProgress.png" id="4_t62sk"]
+[ext_resource type="Texture2D" uid="uid://c3r1jrnbk50fr" path="res://UI/Assets/lightkeepersprites.png" id="7_gya7g"]
+[ext_resource type="Texture2D" uid="uid://t4lwsj7p3kr8" path="res://UI/Assets/AngerMeterUnder.png" id="8_v5i84"]
+[ext_resource type="Texture2D" uid="uid://bbomu3u2jipye" path="res://UI/Assets/AngerMeterOver.png" id="9_lw2ej"]
+[ext_resource type="Texture2D" uid="uid://dk6w77l1aak3j" path="res://UI/Assets/AngerMeterProgress.png" id="10_0pqmq"]
+
+[node name="MainUI" type="CanvasLayer" groups=["MAINUI"]]
+script = ExtResource("1_4ni0o")
+
+[node name="PlayerUI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 320.0
+offset_bottom = 320.0
+
+[node name="LightMeter" type="TextureProgressBar" parent="PlayerUI"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = -27.0
+offset_right = 131.0
+offset_bottom = 5.0
+grow_vertical = 0
+scale = Vector2(0.75, 0.75)
+step = 0.001
+value = 10.0
+texture_under = ExtResource("2_uvgop")
+texture_over = ExtResource("3_1j06g")
+texture_progress = ExtResource("4_t62sk")
+
+[node name="MainMenuControl" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 321.0
+offset_bottom = 321.0
+mouse_filter = 2
+
+[node name="MainMenu" type="TextureRect" parent="MainMenuControl"]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 320.0
+texture = ExtResource("1_tjifb")
+stretch_mode = 5
+
+[node name="NewGame" type="Button" parent="MainMenuControl/MainMenu"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 168.0
+offset_right = 70.0
+offset_bottom = 228.0
+flat = true
+
+[node name="Quit" type="Button" parent="MainMenuControl/MainMenu"]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 168.0
+offset_right = 310.0
+offset_bottom = 228.0
+flat = true
+
+[node name="UpgradeMenuControl" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 320.0
+offset_bottom = 321.0
+
+[node name="UpgradeMenu" type="TextureRect" parent="UpgradeMenuControl"]
+layout_mode = 0
+offset_right = 1916.0
+offset_bottom = 1916.0
+scale = Vector2(0.167, 0.167)
+texture = ExtResource("3_aouxq")
+stretch_mode = 5
+
+[node name="PreviewRight" type="Sprite2D" parent="UpgradeMenuControl"]
+position = Vector2(32, 192)
+texture = ExtResource("7_gya7g")
+hframes = 4
+vframes = 4
+
+[node name="PreviewMiddle" type="Sprite2D" parent="UpgradeMenuControl"]
+position = Vector2(88, 205)
+texture = ExtResource("7_gya7g")
+hframes = 4
+vframes = 4
+
+[node name="PreviewLeft" type="Sprite2D" parent="UpgradeMenuControl"]
+position = Vector2(144, 191)
+texture = ExtResource("7_gya7g")
+hframes = 4
+vframes = 4
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="UpgradeMenuControl"]
+layout_mode = 0
+offset_left = 185.0
+offset_top = 259.0
+offset_right = 313.0
+offset_bottom = 299.0
+texture_under = ExtResource("8_v5i84")
+texture_over = ExtResource("9_lw2ej")
+texture_progress = ExtResource("10_0pqmq")
+
+[node name="ItemDescription" type="RichTextLabel" parent="UpgradeMenuControl"]
+layout_mode = 0
+offset_left = 10.0
+offset_top = 261.0
+offset_right = 139.0
+offset_bottom = 290.0
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "weasd"
+
+[connection signal="pressed" from="MainMenuControl/MainMenu/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="MainMenuControl/MainMenu/Quit" to="." method="_on_quit_pressed"]

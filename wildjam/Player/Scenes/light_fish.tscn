@@ -7,18 +7,21 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n3lqq"]
 
 [node name="LightFish" type="CharacterBody2D" groups=["FISH"]]
+collision_layer = 17
 collision_mask = 0
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_n3lqq")
+SPEED = 400.0
+CAMSPEED = 300.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="."]
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
+offset_left = -16.0
+offset_top = -16.0
+offset_right = 16.0
+offset_bottom = 16.0
 color = Color(1, 1, 0, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -36,3 +39,5 @@ shadow_enabled = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Box"]
 shape = SubResource("RectangleShape2D_n3lqq")
 debug_color = Color(0.610656, 0.538777, 0, 0.42)
+
+[node name="OnScreen" type="VisibleOnScreenNotifier2D" parent="."]
