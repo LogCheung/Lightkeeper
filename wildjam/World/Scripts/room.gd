@@ -1,10 +1,17 @@
 extends Node2D
 class_name Room
 
+const STANDARDEASY = preload("res://TileSet/Resources/tileSetStandardEasy.tres")
+const STANDARDMED = preload("res://TileSet/Resources/tileSetStandardMedium.tres")
+const STANDARDHARD = preload("res://TileSet/Resources/tileSetStandardHard.tres")
+const CORNEREASY = preload("res://TileSet/Resources/tileSetCornersEasy.tres")
+const CORNERDMED = preload("res://TileSet/Resources/tileSetCornersMed.tres")
+const CORNERHARD = preload("res://TileSet/Resources/tileSetCornersHard.tres")
+
 enum DIRECTION {UP, LEFT, RIGHT}
 
 static var xDim : int = 20
-static  var yDim : int = 20
+static var yDim : int = 20
 
 @export var gridPos : Vector2
 @export var nextRoom : Room
@@ -28,12 +35,12 @@ signal clear_to_start
 
 func _ready() -> void:
 	await clear_to_start
-	print(is_end)
 	fish = get_tree().get_first_node_in_group("FISH")
 	var tSize = tile.tile_set.tile_size
 	for x in xDim:
 		for y in yDim:
 			tile.set_cell(Vector2(x,y),1,Vector2(0,1))
+	#tile.set_pattern(Vector2(0,0),tile.tile_set.get_pattern(0))
 	
 	topLeft = global_position
 	topRight = global_position + Vector2(xDim,0) * Vector2(tSize)
@@ -71,9 +78,13 @@ func _process(delta: float) -> void:
 	if !rayCast:
 		return
 	if rayCast.get_collider() != null:
+		
 		if is_end:
 			var ui = get_tree().get_first_node_in_group("MAINUI")
 			ui.end_reached.emit()
+			Global.boats += 1
+			Global.money += 50
+			
 		fish.center_reached.emit()
 		pass
 

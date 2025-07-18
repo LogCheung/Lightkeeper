@@ -1,15 +1,37 @@
-[gd_scene load_steps=11 format=3 uid="uid://c22i1myeet1ty"]
+[gd_scene load_steps=14 format=3 uid="uid://c22i1myeet1ty"]
 
 [ext_resource type="Script" uid="uid://c862j1ugcmaby" path="res://UI/main_menu.gd" id="1_4ni0o"]
 [ext_resource type="Texture2D" uid="uid://bqyymhw84wg0q" path="res://UI/Assets/MainMenu.png" id="1_tjifb"]
 [ext_resource type="Texture2D" uid="uid://h3opk32nkxng" path="res://UI/Assets/LightMeterUnder.png" id="2_uvgop"]
 [ext_resource type="Texture2D" uid="uid://e2ljkvhor488" path="res://UI/Assets/LightMeterOver.png" id="3_1j06g"]
-[ext_resource type="Texture2D" uid="uid://bqt6sl731ydsr" path="res://UI/Assets/UpgradeMenu.png" id="3_aouxq"]
+[ext_resource type="Texture2D" uid="uid://dj6r7jy3waamr" path="res://UI/Assets/UpgradeMenu.png" id="3_aouxq"]
 [ext_resource type="Texture2D" uid="uid://1rfcrqvlveeg" path="res://UI/Assets/LightMeterProgress.png" id="4_t62sk"]
 [ext_resource type="Texture2D" uid="uid://c3r1jrnbk50fr" path="res://UI/Assets/lightkeepersprites.png" id="7_gya7g"]
 [ext_resource type="Texture2D" uid="uid://t4lwsj7p3kr8" path="res://UI/Assets/AngerMeterUnder.png" id="8_v5i84"]
 [ext_resource type="Texture2D" uid="uid://bbomu3u2jipye" path="res://UI/Assets/AngerMeterOver.png" id="9_lw2ej"]
 [ext_resource type="Texture2D" uid="uid://dk6w77l1aak3j" path="res://UI/Assets/AngerMeterProgress.png" id="10_0pqmq"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gya7g"]
+atlas = ExtResource("3_aouxq")
+region = Rect2(0, 0, 320, 320)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_v5i84"]
+atlas = ExtResource("3_aouxq")
+region = Rect2(320, 0, 320, 320)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_lw2ej"]
+animations = [{
+"frames": [{
+"duration": 4.0,
+"texture": SubResource("AtlasTexture_gya7g")
+}, {
+"duration": 4.0,
+"texture": SubResource("AtlasTexture_v5i84")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="MainUI" type="CanvasLayer" groups=["MAINUI"]]
 script = ExtResource("1_4ni0o")
@@ -37,6 +59,42 @@ value = 10.0
 texture_under = ExtResource("2_uvgop")
 texture_over = ExtResource("3_1j06g")
 texture_progress = ExtResource("4_t62sk")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PlayerUI"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 276.0
+offset_right = 195.0
+offset_bottom = 308.0
+scale = Vector2(0.5, 0.5)
+theme_override_constants/separation = 48
+
+[node name="Control" type="Control" parent="PlayerUI/HBoxContainer"]
+layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerUI/HBoxContainer/Control"]
+texture = ExtResource("7_gya7g")
+offset = Vector2(16, 16)
+hframes = 4
+vframes = 4
+
+[node name="Control2" type="Control" parent="PlayerUI/HBoxContainer"]
+layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerUI/HBoxContainer/Control2"]
+texture = ExtResource("7_gya7g")
+offset = Vector2(16, 16)
+hframes = 4
+vframes = 4
+
+[node name="Control3" type="Control" parent="PlayerUI/HBoxContainer"]
+layout_mode = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerUI/HBoxContainer/Control3"]
+texture = ExtResource("7_gya7g")
+offset = Vector2(16, 16)
+hframes = 4
+vframes = 4
 
 [node name="MainMenuControl" type="Control" parent="."]
 unique_name_in_owner = true
@@ -70,57 +128,157 @@ offset_bottom = 228.0
 flat = true
 
 [node name="UpgradeMenuControl" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 320.0
 offset_bottom = 321.0
 
-[node name="UpgradeMenu" type="TextureRect" parent="UpgradeMenuControl"]
-layout_mode = 0
-offset_right = 1916.0
-offset_bottom = 1916.0
-scale = Vector2(0.167, 0.167)
-texture = ExtResource("3_aouxq")
-stretch_mode = 5
+[node name="UpgradeMenu" type="AnimatedSprite2D" parent="UpgradeMenuControl"]
+unique_name_in_owner = true
+position = Vector2(160.14, 160.14)
+scale = Vector2(0.999125, 0.999125)
+sprite_frames = SubResource("SpriteFrames_lw2ej")
+frame_progress = 0.959287
 
-[node name="PreviewRight" type="Sprite2D" parent="UpgradeMenuControl"]
-position = Vector2(32, 192)
+[node name="PreviewLeft" type="Sprite2D" parent="UpgradeMenuControl"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.501961)
+position = Vector2(32, 241)
 texture = ExtResource("7_gya7g")
 hframes = 4
 vframes = 4
 
 [node name="PreviewMiddle" type="Sprite2D" parent="UpgradeMenuControl"]
-position = Vector2(88, 205)
+unique_name_in_owner = true
+position = Vector2(88, 250)
 texture = ExtResource("7_gya7g")
 hframes = 4
 vframes = 4
 
-[node name="PreviewLeft" type="Sprite2D" parent="UpgradeMenuControl"]
-position = Vector2(144, 191)
+[node name="PreviewRight" type="Sprite2D" parent="UpgradeMenuControl"]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.501961)
+position = Vector2(144, 240)
 texture = ExtResource("7_gya7g")
 hframes = 4
 vframes = 4
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="UpgradeMenuControl"]
+[node name="AngerMeter" type="TextureProgressBar" parent="UpgradeMenuControl"]
+unique_name_in_owner = true
 layout_mode = 0
 offset_left = 185.0
-offset_top = 259.0
+offset_top = 281.0
 offset_right = 313.0
-offset_bottom = 299.0
+offset_bottom = 321.0
+max_value = 3.0
 texture_under = ExtResource("8_v5i84")
 texture_over = ExtResource("9_lw2ej")
 texture_progress = ExtResource("10_0pqmq")
 
 [node name="ItemDescription" type="RichTextLabel" parent="UpgradeMenuControl"]
+unique_name_in_owner = true
+clip_contents = false
 layout_mode = 0
-offset_left = 10.0
-offset_top = 261.0
-offset_right = 139.0
-offset_bottom = 290.0
+offset_left = 11.0
+offset_top = 282.0
+offset_right = 267.0
+offset_bottom = 336.0
+scale = Vector2(0.5, 0.5)
 theme_override_font_sizes/normal_font_size = 8
 bbcode_enabled = true
-text = "weasd"
+text = "
+"
+scroll_active = false
+
+[node name="Money" type="RichTextLabel" parent="UpgradeMenuControl"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 0
+offset_left = 187.0
+offset_top = 225.0
+offset_right = 279.0
+offset_bottom = 269.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "wasd"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Cost" type="RichTextLabel" parent="UpgradeMenuControl"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 0
+offset_left = 144.0
+offset_top = 282.0
+offset_right = 190.0
+offset_bottom = 310.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "wasd"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BoatsSaved" type="RichTextLabel" parent="UpgradeMenuControl"]
+unique_name_in_owner = true
+clip_contents = false
+layout_mode = 0
+offset_left = 187.0
+offset_top = 247.0
+offset_right = 279.0
+offset_bottom = 289.0
+scale = Vector2(0.5, 0.5)
+theme_override_font_sizes/normal_font_size = 8
+bbcode_enabled = true
+text = "wasd"
+scroll_active = false
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Buy" type="Button" parent="UpgradeMenuControl"]
+layout_mode = 0
+offset_left = 143.0
+offset_top = 298.0
+offset_right = 168.0
+offset_bottom = 313.0
+focus_mode = 0
+flat = true
+
+[node name="Continue" type="Button" parent="UpgradeMenuControl"]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 222.0
+offset_right = 316.0
+offset_bottom = 270.0
+focus_mode = 0
+flat = true
+
+[node name="ScrollRight" type="Button" parent="UpgradeMenuControl"]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 236.0
+offset_right = 120.0
+offset_bottom = 267.0
+focus_mode = 0
+text = "
+"
+flat = true
+
+[node name="ScrollLeft" type="Button" parent="UpgradeMenuControl"]
+layout_mode = 0
+offset_left = 56.0
+offset_top = 239.0
+offset_right = 64.0
+offset_bottom = 270.0
+focus_mode = 0
+flat = true
 
 [connection signal="pressed" from="MainMenuControl/MainMenu/NewGame" to="." method="_on_new_game_pressed"]
 [connection signal="pressed" from="MainMenuControl/MainMenu/Quit" to="." method="_on_quit_pressed"]
+[connection signal="visibility_changed" from="UpgradeMenuControl" to="." method="_on_upgrade_menu_control_visibility_changed"]
+[connection signal="pressed" from="UpgradeMenuControl/Buy" to="." method="_on_buy_pressed"]
+[connection signal="pressed" from="UpgradeMenuControl/ScrollRight" to="." method="_on_scroll_right_pressed"]
+[connection signal="pressed" from="UpgradeMenuControl/ScrollLeft" to="." method="_on_scroll_left_pressed"]
