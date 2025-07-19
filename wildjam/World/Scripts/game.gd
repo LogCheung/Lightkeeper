@@ -5,14 +5,16 @@ const ROOM = preload("res://World/room.tscn")
 @onready var layout: TileMapLayer = %Layout
 @onready var roomsNode: Node2D = %RoomsNode
 @onready var colShapesNode: Node2D = %ColShapesNode
+@onready var walls: TileMapLayer = %Walls
 
+var usedRoomTiles : Array
 var fish : Fish
 func _ready() -> void:
 	await ready
 	#get_window().content_scale_size = DisplayServer.window_get_size() / Vector2i(6,3)
 	fish = get_tree().get_first_node_in_group("FISH")
 
-func create_rooms(cornerArray : Array, endPos : Vector2) -> void:
+func create_rooms(cornerArray : Array, endPos : Vector2,startPos : Vector2) -> void:
 	var usedCells = layout.get_used_cells()
 	var roomSize = Room.get_room_size()
 	var prevRoom : Room = null
@@ -24,6 +26,7 @@ func create_rooms(cornerArray : Array, endPos : Vector2) -> void:
 		if cornerArray.has(Vector2(cell)):
 			room.is_corner = true
 			room.is_end = true if endPos == Vector2(cell) else false
+			room.is_start = true if startPos == Vector2(cell) else false
 			cornerRoomArray.append(room)
 		
 		room.global_position = Vector2(cell) * roomSize * Vector2(16,16)
@@ -32,11 +35,20 @@ func create_rooms(cornerArray : Array, endPos : Vector2) -> void:
 		if prevRoom == null: # is starting room
 			prevRoom = room
 			prevRoom.clear_to_start.emit()
+			usedRoomTiles.append_array(prevRoom.usedTiles)
 		else:
 			prevRoom.nextRoom = room
 			prevRoom.clear_to_start.emit()
+			usedRoomTiles.append_array(prevRoom.usedTiles)
 			prevRoom = room
+			
 	prevRoom.clear_to_start.emit()
+	usedRoomTiles.append_array(prevRoom.usedTiles)
+	#
+	for tile in usedRoomTiles:
+		tile = walls.local_to_map(tile)
+		walls.set_cell(tile,0)
+	
 	create_limit_polygon(cornerRoomArray)
 	fish.global_position = cornerRoomArray.front().center
 	%Camera.global_position = cornerRoomArray.front().center

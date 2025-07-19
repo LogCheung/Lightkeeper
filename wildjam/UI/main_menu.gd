@@ -25,6 +25,7 @@ func _ready() -> void:
 	%UpgradeMenu.play("default")
 	end_reached.connect(on_end_reached)
 	lightMeter.value = lightMeterMax
+	angerMeter.value = Global.anger
 	gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 
 func _process(delta: float) -> void:

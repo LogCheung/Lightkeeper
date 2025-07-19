@@ -1,12 +1,12 @@
 extends Node2D
 class_name Room
 
-const STANDARDEASY = preload("res://TileSet/Resources/tileSetStandardEasy.tres")
-const STANDARDMED = preload("res://TileSet/Resources/tileSetStandardMedium.tres")
-const STANDARDHARD = preload("res://TileSet/Resources/tileSetStandardHard.tres")
-const CORNEREASY = preload("res://TileSet/Resources/tileSetCornersEasy.tres")
-const CORNERDMED = preload("res://TileSet/Resources/tileSetCornersMed.tres")
-const CORNERHARD = preload("res://TileSet/Resources/tileSetCornersHard.tres")
+const STANDARDEASY = preload("res://TileSet/Resources/StandardEasy.tres")
+const STANDARDMED = preload("res://TileSet/Resources/StandardMedium.tres")
+const STANDARDHARD = preload("res://TileSet/Resources/StandardHard.tres")
+const CORNEREASY = preload("res://TileSet/Resources/CornerEasy.tres")
+const CORNERDMED = preload("res://TileSet/Resources/CornerMed.tres")
+const CORNERHARD = preload("res://TileSet/Resources/CornerHard.tres")
 
 enum DIRECTION {UP, LEFT, RIGHT}
 
@@ -17,6 +17,7 @@ static var yDim : int = 20
 @export var nextRoom : Room
 @export var is_corner : bool
 @export var is_end : bool
+@export var is_start : bool
 @export var is_side : bool
 @export var nextDirection : DIRECTION
 
@@ -31,6 +32,7 @@ var center : Vector2
 var fish : Fish
 var rayCast
 
+var usedTiles : Array
 signal clear_to_start
 
 func _ready() -> void:
@@ -39,7 +41,8 @@ func _ready() -> void:
 	var tSize = tile.tile_set.tile_size
 	for x in xDim:
 		for y in yDim:
-			tile.set_cell(Vector2(x,y),1,Vector2(0,1))
+			usedTiles.append(tile.map_to_local(Vector2(x,y) + (global_position/Vector2(tSize))))
+			#tile.set_cell(Vector2(x,y),1,Vector2(0,1))
 	#tile.set_pattern(Vector2(0,0),tile.tile_set.get_pattern(0))
 	
 	topLeft = global_position
