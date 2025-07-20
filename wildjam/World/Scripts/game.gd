@@ -2,6 +2,8 @@ extends Node2D
 
 const ROOM = preload("res://World/room.tscn")
 
+@export var continuing : bool = false
+
 @onready var layout: TileMapLayer = %Layout
 @onready var roomsNode: Node2D = %RoomsNode
 @onready var colShapesNode: Node2D = %ColShapesNode
@@ -15,22 +17,43 @@ func _ready() -> void:
 	fish = get_tree().get_first_node_in_group("FISH")
 
 func create_rooms(cornerArray : Array, endPos : Vector2,startPos : Vector2) -> void:
+	if continuing:
+		for child in roomsNode.get_children():
+			child.queue_free()
+		for child in colShapesNode.get_children():
+			child.queue_free()
 	var usedCells = layout.get_used_cells()
 	var roomSize = Room.get_room_size()
 	var prevRoom : Room = null
 	var cornerRoomArray : Array[Room]
 	
+	var roomCounter : int = 0
 	for cell in usedCells:
 		var room = ROOM.instantiate()
 		room.gridPos = cell
 		if cornerArray.has(Vector2(cell)):
+			roomCounter -= 1
 			room.is_corner = true
 			room.is_end = true if endPos == Vector2(cell) else false
 			room.is_start = true if startPos == Vector2(cell) else false
 			cornerRoomArray.append(room)
 		
+		# room difficulty
+		var rand = randi() % 100 + 1
+		if roomCounter % 2 == 0:
+			room.type = Room.TYPE.LIGHT
+		elif rand <= 45:
+			room.type = Room.TYPE.EASY
+		elif rand <= 80:
+			room.type = Room.TYPE.MEDIUM
+		elif rand <= 100:
+			room.type = Room.TYPE.HARD
+		
 		room.global_position = Vector2(cell) * roomSize * Vector2(16,16)
 		roomsNode.add_child(room)
+		
+		if room.is_end or room.is_start:
+			room.type = Room.TYPE.NONE
 		
 		if prevRoom == null: # is starting room
 			prevRoom = room
@@ -47,10 +70,11 @@ func create_rooms(cornerArray : Array, endPos : Vector2,startPos : Vector2) -> v
 	#
 	for tile in usedRoomTiles:
 		tile = walls.local_to_map(tile)
-		walls.set_cell(tile,0)
+		walls.set_cell(tile,-1)
 	
 	create_limit_polygon(cornerRoomArray)
 	fish.global_position = cornerRoomArray.front().center
+	fish.boat.global_position = fish.global_position
 	%Camera.global_position = cornerRoomArray.front().center
 
 func create_limit_polygon(corRoomArray : Array[Room]) -> void:
@@ -93,4 +117,5 @@ func create_limit_polygon(corRoomArray : Array[Room]) -> void:
 func area_entered(body : Node2D, area : Area2D) -> void:
 	await fish.center_reached
 	if body.is_in_group("CAMERAMAN"):
-		%PhanCam.set_limit_target(area.get_children().front().get_path())
+		if is_instance_valid(area):
+			%PhanCam.set_limit_target(area.get_children().front().get_path())

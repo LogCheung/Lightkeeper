@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://cuxtucedgr20w"]
+
+[ext_resource type="Script" uid="uid://frjoty72xde3" path="res://Player/Scenes/bullet.gd" id="1_rmehu"]
+[ext_resource type="Texture2D" uid="uid://c3r1jrnbk50fr" path="res://UI/Assets/lightkeepersprites.png" id="2_rmehu"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rmehu"]
+size = Vector2(4, 4)
+
+[node name="Bullet" type="Area2D"]
+scale = Vector2(3, 3)
+collision_layer = 128
+collision_mask = 128
+script = ExtResource("1_rmehu")
+SPEED = 400.0
+RANGE = 10000.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_rmehu")
+hframes = 8
+vframes = 8
+frame = 31
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_rmehu")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

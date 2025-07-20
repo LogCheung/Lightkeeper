@@ -47,7 +47,7 @@ duration = 1.0
 transition = 0
 ease = 2
 
-[node name="World" type="Node2D"]
+[node name="World" type="Node2D" groups=["WORLD"]]
 
 [node name="Game" type="Node2D" parent="." groups=["GAMENODE"]]
 process_mode = 2
@@ -55,7 +55,7 @@ script = ExtResource("1_k8do8")
 
 [node name="Layout" type="TileMapLayer" parent="Game"]
 unique_name_in_owner = true
-position = Vector2(-50, 0)
+position = Vector2(50, 0)
 tile_set = SubResource("TileSet_k8do8")
 script = ExtResource("2_3f78f")
 

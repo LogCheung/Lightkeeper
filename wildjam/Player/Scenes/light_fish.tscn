@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://cffy17k3rvr3l"]
+[gd_scene load_steps=6 format=3 uid="uid://cffy17k3rvr3l"]
 
 [ext_resource type="Script" uid="uid://bxav20tgbds0c" path="res://Player/Scenes/light_fish.gd" id="1_n3lqq"]
 [ext_resource type="Texture2D" uid="uid://d01xg632o8i33" path="res://Player/Assets/fish.png" id="2_2gqlo"]
@@ -10,11 +10,8 @@ height = 18.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_n3lqq"]
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_o4gp2"]
-polygon = PackedVector2Array(11, 16, 11, -17, -11, -17, -11, 16)
-
 [node name="LightFish" type="CharacterBody2D" groups=["FISH"]]
-collision_layer = 161
+collision_layer = 545
 collision_mask = 160
 motion_mode = 1
 wall_min_slide_angle = 0.0
@@ -22,6 +19,8 @@ script = ExtResource("1_n3lqq")
 SPEED = 150.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+self_modulate = Color(0.473976, 0.473976, 0.473976, 1)
+rotation = 1.5708
 texture = ExtResource("2_2gqlo")
 hframes = 2
 
@@ -31,10 +30,11 @@ shape = SubResource("CapsuleShape2D_lwfa1")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 scale = Vector2(3, 3)
-color = Color(1, 1, 1, 0.513726)
-energy = 3.0
+color = Color(1, 1, 1, 0.717647)
+energy = 4.0
 range_z_max = 512
 shadow_enabled = true
+shadow_color = Color(0, 0, 0, 1)
 shadow_filter = 1
 texture = ExtResource("3_o4gp2")
 
@@ -47,6 +47,9 @@ debug_color = Color(0.610656, 0.538777, 0, 0.42)
 
 [node name="OnScreen" type="VisibleOnScreenNotifier2D" parent="."]
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
-visible = false
-occluder = SubResource("OccluderPolygon2D_o4gp2")
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="BlowholeCD" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 0.1
+one_shot = true
