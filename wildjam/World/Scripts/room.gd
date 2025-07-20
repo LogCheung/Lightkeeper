@@ -4,6 +4,7 @@ class_name Room
 const STANDARDEASY = preload("res://TileSet/Resources/StandardEasy.tres")
 const STANDARDMED = preload("res://TileSet/Resources/StandardMedium.tres")
 const STANDARDHARD = preload("res://TileSet/Resources/StandardHard.tres")
+const LIGHTROOM = preload("res://TileSet/Resources/LightRoom.tres")
 const PROJECTILE = preload("res://TileSet/Scenes/projectile.tscn")
 
 enum DIRECTION {UP, LEFT, RIGHT}
@@ -57,6 +58,20 @@ func _ready() -> void:
 			var rand = randi() % 10
 			tile.set_pattern(Vector2(0,0),tile.tile_set.get_pattern(rand))
 			create_projectiles()
+		TYPE.HARD:
+			tile.tile_set = STANDARDHARD
+			var rand = randi() % 10
+			tile.set_pattern(Vector2(0,0),tile.tile_set.get_pattern(rand))
+			create_projectiles()
+		TYPE.LIGHT:
+			tile.tile_set = LIGHTROOM
+			var rand = randi() % 10
+			tile.set_pattern(Vector2(0,0),tile.tile_set.get_pattern(rand))
+			create_projectiles()
+		TYPE.NONE:
+			tile.tile_set = STANDARDEASY
+			if is_end:
+				tile.set_pattern(Vector2(0,0),tile.tile_set.get_pattern(10))
 		
 	
 	topLeft = global_position
@@ -65,8 +80,8 @@ func _ready() -> void:
 	botLeft = global_position + Vector2(0,yDim) * Vector2(tSize)
 	center = global_position + Vector2(xDim/2,yDim/2) * Vector2(tSize)
 	
-	shape.shape.size = tile.get_used_rect().size * tile.tile_set.tile_size
-	shape.position = tile.get_used_rect().get_center() * tile.tile_set.tile_size
+	shape.shape.size = back.get_used_rect().size * tile.tile_set.tile_size
+	shape.position = back.get_used_rect().get_center() * tile.tile_set.tile_size
 	
 	if nextRoom:
 		if nextRoom.gridPos.x < gridPos.x:
@@ -77,10 +92,6 @@ func _ready() -> void:
 			nextDirection = DIRECTION.UP
 
 	if is_corner:
-		#if nextDirection == DIRECTION.LEFT:
-			#tile.global_position.x += 320
-			#tile.scale.x = -1
-		#
 		var ray = RayCast2D.new()
 		ray.set_collision_mask_value(1,false)
 		ray.set_collision_mask_value(5,true)
@@ -147,6 +158,8 @@ func projectile_helper(tiles : Array,num : int) -> void:
 
 func activate_projectiles() -> void:
 	var projs = %ProjectileNode.get_children()
+	if projs.is_empty():
+		return
 	for proj : Projectile in projs:
 		if proj.active:
 			return

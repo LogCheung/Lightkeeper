@@ -29,6 +29,7 @@ func create_rooms(cornerArray : Array, endPos : Vector2,startPos : Vector2) -> v
 	
 	var roomCounter : int = 0
 	for cell in usedCells:
+		roomCounter += 1
 		var room = ROOM.instantiate()
 		room.gridPos = cell
 		if cornerArray.has(Vector2(cell)):

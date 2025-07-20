@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bg5o50hofeq3l"]
+[gd_scene load_steps=6 format=3 uid="uid://bg5o50hofeq3l"]
 
 [ext_resource type="Script" uid="uid://b1x55ecu5xuev" path="res://TileSet/Scripts/projectile.gd" id="1_jxhk1"]
 [ext_resource type="Texture2D" uid="uid://cd440lbp7eb4k" path="res://TileSet/projectilesprites.png" id="2_fwehd"]
+[ext_resource type="AudioStream" uid="uid://gjoske5oatte" path="res://Audio/lightkeepersfx/Wave.wav" id="3_llrya"]
+[ext_resource type="AudioStream" uid="uid://dvqqji6u78k7k" path="res://Audio/lightkeepersfx/PlyrHit.wav" id="4_nlgfb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fwehd"]
 radius = 4.0
@@ -14,9 +16,19 @@ script = ExtResource("1_jxhk1")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 unique_name_in_owner = true
+modulate = Color(0.237539, 0.237539, 0.237539, 1)
 texture = ExtResource("2_fwehd")
 hframes = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 unique_name_in_owner = true
 shape = SubResource("CapsuleShape2D_fwehd")
+
+[node name="Wave" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_llrya")
+volume_db = -5.0
+bus = &"SFX"
+
+[node name="PlayerHit" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("4_nlgfb")
+bus = &"SFX"

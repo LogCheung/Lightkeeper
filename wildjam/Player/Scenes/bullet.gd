@@ -3,6 +3,8 @@ extends Area2D
 @export var SPEED : float
 @export var RANGE : float
 
+@onready var rockbreak: AudioStreamPlayer2D = $Rockbreak
+
 var travelled_distance = 0
 
 func _process(delta):
@@ -20,4 +22,8 @@ func _on_body_entered(body: Node2D) -> void:
 		for x in range(cell.x-1,cell.x+2):
 			for y in range(cell.y-1,cell.y+2):
 				body.set_cell(Vector2(x,y),-1)
+		rockbreak.play()
+		hide()
+		SPEED = 0
+		await get_tree().create_timer(.52).timeout
 		queue_free()

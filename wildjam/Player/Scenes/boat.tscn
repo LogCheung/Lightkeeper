@@ -1,11 +1,78 @@
-[gd_scene load_steps=4 format=3 uid="uid://c2ja4ar0rki0s"]
+[gd_scene load_steps=11 format=3 uid="uid://c2ja4ar0rki0s"]
 
 [ext_resource type="Script" uid="uid://cnu173j0tv1oc" path="res://Player/Scenes/boat.gd" id="1_u0fnj"]
 [ext_resource type="Texture2D" uid="uid://06a1m708hhga" path="res://Player/Assets/boat.png" id="2_u0fnj"]
+[ext_resource type="AudioStream" uid="uid://bqjoypwregulv" path="res://Audio/lightkeepersfx/Damage.wav" id="3_ajlkq"]
+[ext_resource type="AudioStream" uid="uid://b1jkdnghmfp7e" path="res://Audio/lightkeepersfx/Break.wav" id="3_mchmb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nfw3b"]
-radius = 4.0
-height = 14.0
+radius = 2.0
+height = 8.0
+
+[sub_resource type="Animation" id="Animation_ajlkq"]
+resource_name = "Armor"
+length = 1.2
+loop_mode = 1
+step = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_ns3cf"]
+resource_name = "damage"
+length = 1.2
+loop_mode = 1
+step = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [8, 9, 10, 11]
+}
+
+[sub_resource type="Animation" id="Animation_54wbq"]
+resource_name = "normal"
+length = 1.2
+loop_mode = 1
+step = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.6, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [4, 5, 6, 7]
+}
+
+[sub_resource type="Animation" id="Animation_e52gb"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_e52gb"]
+_data = {
+&"Armor": SubResource("Animation_ajlkq"),
+&"RESET": SubResource("Animation_e52gb"),
+&"damage": SubResource("Animation_ns3cf"),
+&"normal": SubResource("Animation_54wbq")
+}
 
 [node name="Boat" type="CharacterBody2D" groups=["BOAT"]]
 modulate = Color(0.262932, 0.262932, 0.262932, 1)
@@ -14,14 +81,35 @@ collision_mask = 128
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_u0fnj")
-SPEED = 150.0
+SPEED = 130.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 rotation = 1.5708
 texture = ExtResource("2_u0fnj")
+hframes = 4
 vframes = 3
-frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+unique_name_in_owner = true
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_nfw3b")
+
+[node name="HitboxCD" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 5.0
+one_shot = true
+
+[node name="Damage" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_ajlkq")
+bus = &"SFX"
+
+[node name="Break" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("3_mchmb")
+bus = &"SFX"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_e52gb")
+}
+
+[connection signal="timeout" from="HitboxCD" to="." method="_on_hitbox_cd_timeout"]

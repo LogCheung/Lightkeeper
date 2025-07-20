@@ -6,12 +6,14 @@ enum DIR {
 }
 
 @export var type : DIR
-@export var SPEED : float = 100
+@export var SPEED : float = 75
 @export var RANGE : float = 150
 @export var active : bool
 
 @onready var sprite: Sprite2D = %Sprite2D
 @onready var colShape: CollisionShape2D = %CollisionShape2D
+@onready var sound: AudioStreamPlayer2D = $Wave
+@onready var player_hit: AudioStreamPlayer2D = $PlayerHit
 
 var dir : Vector2 = Vector2.DOWN
 var fish : Fish
@@ -22,7 +24,7 @@ func _ready() -> void:
 	match type:
 		DIR.BULLET:
 			sprite.frame = 1
-			RANGE = 100
+			RANGE = 75
 			dir = global_position.direction_to(fish.global_position)
 		DIR.DOWN, DIR.UP:
 			sprite.frame = 2
@@ -36,10 +38,13 @@ func _ready() -> void:
 			dir = Vector2.RIGHT
 	
 var travelled_distance = 0
-
+var played : bool = false
 func _process(delta: float) -> void:
 	if !active:
 		return
+	if !played:
+		sound.play()
+		played = true
 	if type == DIR.BULLET:
 		dir = global_position.direction_to(fish.global_position)
 	position += dir * SPEED * delta
@@ -47,3 +52,13 @@ func _process(delta: float) -> void:
 	
 	if travelled_distance > RANGE:
 		queue_free()
+	
+	if !get_overlapping_bodies().is_empty():
+		if get_overlapping_bodies().front() is Fish:
+			var ui = get_tree().get_first_node_in_group("MAINUI")
+			ui.lightMeter.value -= 10
+			player_hit.play()
+			queue_free()
+		if get_overlapping_bodies().front() is Boat:
+			get_overlapping_bodies().front().health -= 1
+			queue_free()

@@ -23,11 +23,10 @@ color = Color(1, 1, 1, 0.929412)
 tile_set = ExtResource("2_sy3uv")
 
 [node name="Area2D" type="Area2D" parent="."]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 unique_name_in_owner = true
-z_index = 3
+z_index = 6
 shape = SubResource("RectangleShape2D_sy3uv")
 debug_color = Color(0.966178, 7.70092e-07, 0.482141, 0.42)
 

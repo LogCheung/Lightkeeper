@@ -3,7 +3,7 @@ extends CanvasLayer
 const BOAT = preload("res://Player/Scenes/boat.tscn")
 
 @export var lightMeterMax : float = 100
-@export var lightDecayRate : float = .222222
+@export var lightDecayRate : float = .0833333
 
 @onready var fish : Fish = get_tree().get_first_node_in_group("FISH")
 @onready var boat : Boat = get_tree().get_first_node_in_group("BOAT")
@@ -22,12 +22,20 @@ const BOAT = preload("res://Player/Scenes/boat.tscn")
 @onready var angerLose: Control = %AngerLose
 @onready var lightLose: Control = %LightLose
 
+@onready var continueSFX: AudioStreamPlayer2D = $Continue
+@onready var buy: AudioStreamPlayer2D = $Buy
+@onready var select1: AudioStreamPlayer2D = $Select1
+@onready var select2: AudioStreamPlayer2D = $Select2
+@onready var select3: AudioStreamPlayer2D = $Select3
+@onready var swim_1: AudioStreamPlayer2D = %Swim1
+
 signal end_reached
 
 var maxLightScale = Vector2(5.0,5.0)
 
 # MAINMENU AND MAIN UI
 func _ready() -> void:
+	$MainMenuSong.play()
 	%UpgradeMenu.play("default")
 	end_reached.connect(on_end_reached)
 	
@@ -35,14 +43,22 @@ func _ready() -> void:
 	angerMeter.value = Global.anger
 	fish.light.scale = maxLightScale
 	fish.blowhole_used.connect(on_blowhole_used)
+	fish.light_collected.connect(on_light_collected)
 	
 	gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 
 func _process(delta: float) -> void:
+	if angerLose.visible or lightLose.visible:
+		lose_labels()
+	if upgrade_menu_control.visible:
+		gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 	if gameNode.process_mode == Node.PROCESS_MODE_PAUSABLE:
-		#lightMeter.value -= lightDecayRate
+		lightMeter.value -= lightDecayRate
 		if !fish.onScreen.is_on_screen():
 			lightMeter.value -= lightDecayRate
+		
+		if abs(lightMeter.value - 30) <= 1 :
+			$Danger.play()
 		
 		if lightMeter.value <= 0.0:
 			gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
@@ -51,16 +67,37 @@ func _process(delta: float) -> void:
 	
 	fish.light.scale = Vector2(2.0,2.0) + (Vector2(0.03,.03) * lightMeter.value)
 
+func lose_labels() -> void:
+	%Nights.text = str(Global.nights)
+	%Sparks.text = str(Global.money)
+	%Boats.text = str(Global.boats)
+	%Nights2.text = str(Global.nights)
+	%Sparks2.text = str(Global.money)
+	%Boats2.text = str(Global.boats)
+
+
 func on_blowhole_used() -> void:
 	lightMeter.value -= 15 
 	pass
 
+func on_light_collected() -> void:
+	$Pickup2.play()
+	lightMeter.value += 60
+	Global.money += 1
+	pass
+
 func _on_new_game_pressed() -> void:
+	boat.show()
+	boat.health = boat.max_health
+	$MainMenuSong.stop()
 	%MainMenuControl.hide()
+	continueSFX.play()
 	gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE
+	swim_1.play()
 	
 
 func _on_quit_pressed() -> void:
+	continueSFX.play()
 	get_tree().quit()
 
 # UPGRADE MENU
@@ -77,7 +114,7 @@ var upgradeInv : Dictionary = {
 var max_frame : int = 5
 var min_frame : int = 0
 func on_end_reached() -> void:
-	if get_tree().get_first_node_in_group("BOAT"):
+	if get_tree().get_first_node_in_group("BOAT").visible:
 		Global.boats += 1
 		Global.redempCounter -= 1 if Global.anger >= 1 else 0
 		Global.anger -= 1 if Global.redempCounter <= 0 else 0
@@ -97,6 +134,7 @@ func on_end_reached() -> void:
 		owner.add_child(newBoat)
 		
 		boat = newBoat
+	Global.day += 1
 	
 	# creating new level assuming they will continue
 	gameNode.layout.height += 1
@@ -118,8 +156,11 @@ func _on_upgrade_menu_control_visibility_changed() -> void:
 	
 func _on_buy_pressed() -> void:
 	if can_purchase_and_apply():
+		buy.play()
 		upgradeInv[prevMiddle.frame] += 1 
 		Global.money -= int(cost.text)
+	else:
+		$Buyfail.play()
 	show_upgrade_info()
 
 func can_purchase_and_apply() -> bool:
@@ -148,6 +189,7 @@ func can_purchase_and_apply() -> bool:
 	return true
 
 func _on_scroll_right_pressed() -> void:
+	select1.play()
 	prevLeft.frame = prevMiddle.frame
 	prevMiddle.frame = prevRight.frame
 	prevRight.frame = prevRight.frame + 1 if prevRight.frame < max_frame else min_frame
@@ -155,6 +197,7 @@ func _on_scroll_right_pressed() -> void:
 
 
 func _on_scroll_left_pressed() -> void:
+	select2.play()
 	prevRight.frame = prevMiddle.frame
 	prevMiddle.frame = prevLeft.frame
 	prevLeft.frame = prevLeft.frame - 1 if prevLeft.frame > min_frame else max_frame
@@ -192,6 +235,7 @@ func show_upgrade_info() -> void:
 	angerMeter.value = Global.anger
 
 func _on_continue_pressed() -> void:
+	continueSFX.play()
 	# new level created once player reaches end
 	anim.play("ShopToGame")
 	await anim.animation_finished
@@ -201,26 +245,29 @@ func _on_continue_pressed() -> void:
 
 # Lose MENUS
 func _on_quit_title_anger_pressed() -> void:
+	select3.play()
 	angerLose.hide()
 	main_menu_control.show()
+	reload_default()
 
 func _on_quit_title_light_pressed() -> void:
+	select3.play()
 	lightLose.hide()
 	main_menu_control.show()
+	reload_default()
+
 
 func _on_new_game_anger_pressed() -> void:
+	continueSFX.play()
 	angerLose.hide()
-	Global.money = 0
-	Global.boats = 0
-	Global.anger = 0
-	Global.redempCounter = 5
-	Global.redempMax = 5
-	gameNode.layout.height = 20
-	create_level()
-	main_menu_control.show()
+	reload_default()
 
 func _on_new_game_light_pressed() -> void:
+	continueSFX.play()
 	lightLose.hide()
+	reload_default()
+func reload_default() -> void:
+	upgrade_menu_control.show()
 	Global.money = 0
 	Global.boats = 0
 	Global.anger = 0
@@ -228,27 +275,34 @@ func _on_new_game_light_pressed() -> void:
 	Global.redempMax = 5
 	gameNode.layout.height = 20
 	create_level()
-	main_menu_control.show()
 
 # Pause Menu/ Saves
-func _on_save_pressed() -> void:
-	Global.save()
-
-func _on_load_pressed() -> void:
-	Global._load()
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_released("pause"):
+		if %Pause.visible:
+			gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE
+			%Pause.hide()
+			$Continue.play()
+			return
+		$Pause2.play()
 		gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 		%Pause.show()
 
 func _on_resume_pressed() -> void:
+	continueSFX.play()
 	gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE
 	%Pause.hide()
 	
-
 func _on_settings_pressed() -> void:
-	pass
+	$Select1.play()
+	%Settings.show()
 
 func _on_quit_pause_pressed() -> void:
+	select1.play()
 	get_tree().quit()
+
+
+func _on_back_pressed() -> void:
+	$Select2.play()
+	%Settings.hide()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=4 uid="uid://c3qgdpx5jmnge"]
+[gd_scene load_steps=15 format=4 uid="uid://c3qgdpx5jmnge"]
 
 [ext_resource type="PackedScene" uid="uid://cffy17k3rvr3l" path="res://Player/Scenes/light_fish.tscn" id="1_62w18"]
 [ext_resource type="Texture2D" uid="uid://cpwk1bhaku0bp" path="res://TileSet/TestRooms.png" id="1_j8job"]
@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="6_eidgh"]
 [ext_resource type="PackedScene" uid="uid://b46f4ty88gsfu" path="res://World/camera.tscn" id="6_yf0ba"]
 [ext_resource type="PackedScene" uid="uid://c22i1myeet1ty" path="res://UI/Scenes/mainMenu.tscn" id="9_oe8m4"]
+[ext_resource type="Script" uid="uid://5e0c88ywla0p" path="res://Audio/audio.gd" id="10_lo5ox"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_3f78f"]
 texture = ExtResource("1_j8job")
@@ -82,6 +83,7 @@ unique_name_in_owner = true
 [node name="Camera2D" type="Camera2D" parent="Game/Camera"]
 physics_interpolation_mode = 1
 position = Vector2(0, 3)
+editor_draw_limits = true
 
 [node name="PhantomCameraHost" type="Node" parent="Game/Camera/Camera2D"]
 process_priority = 300
@@ -94,6 +96,10 @@ unique_name_in_owner = true
 position = Vector2(0, 3)
 script = ExtResource("5_yf0ba")
 tween_resource = SubResource("Resource_w47uh")
+draw_limits = true
 metadata/_custom_type_script = "uid://bhexx6mj1xv3q"
+
+[node name="Audio" type="Node" parent="." groups=["AUDIONODE"]]
+script = ExtResource("10_lo5ox")
 
 [node name="MainUI" parent="." instance=ExtResource("9_oe8m4")]

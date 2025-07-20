@@ -15,10 +15,15 @@ run/main_scene="uid://c3qgdpx5jmnge"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="res://Audio/default_bus_layout.tres"
+
 [autoload]
 
 PhantomCameraManager="*res://addons/phantom_camera/scripts/managers/phantom_camera_manager.gd"
 Global="*res://World/Scripts/Global.gd"
+SaveLoad="*res://Saves/SaveLoad.gd"
 
 [debug]
 
@@ -48,6 +53,7 @@ CAMERAMAN=""
 GAMENODE=""
 MAINUI=""
 WORLD=""
+AUDIONODE=""
 
 [input]
 

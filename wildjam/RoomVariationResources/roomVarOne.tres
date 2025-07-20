@@ -1,6 +1,0 @@
-[gd_resource type="Resource" load_steps=2 format=3 uid="uid://cbmcnv03g3si"]
-
-[ext_resource type="Script" uid="uid://6b3mlg728xed" path="res://RoomVariationResources/roomVar.gd" id="1_thgen"]
-
-[resource]
-script = ExtResource("1_thgen")

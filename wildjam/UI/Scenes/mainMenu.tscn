@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://c22i1myeet1ty"]
+[gd_scene load_steps=34 format=3 uid="uid://c22i1myeet1ty"]
 
 [ext_resource type="Script" uid="uid://c862j1ugcmaby" path="res://UI/main_menu.gd" id="1_4ni0o"]
 [ext_resource type="Texture2D" uid="uid://bqyymhw84wg0q" path="res://UI/Assets/MainMenu.png" id="1_tjifb"]
@@ -13,6 +13,18 @@
 [ext_resource type="Texture2D" uid="uid://fg42jqkk01nd" path="res://UI/Assets/PauseMenu.png" id="11_0pqmq"]
 [ext_resource type="Texture2D" uid="uid://dtjjiccnpkvsl" path="res://UI/Assets/AngerLoseMenu.png" id="11_lw2ej"]
 [ext_resource type="Texture2D" uid="uid://bkl23hgyvqlx8" path="res://UI/Assets/LightLoseMenu.png" id="12_0pqmq"]
+[ext_resource type="Texture2D" uid="uid://dop4hsqo6jjep" path="res://UI/Assets/SettingsMenu.png" id="12_bfkoy"]
+[ext_resource type="Script" uid="uid://eevd5aqk4057" path="res://UI/Scenes/slider.gd" id="13_cpimh"]
+[ext_resource type="AudioStream" uid="uid://depvhrkb5jmy1" path="res://Audio/lightkeepersfx/Continue.wav" id="15_b02mf"]
+[ext_resource type="AudioStream" uid="uid://bhjvvk8onjpto" path="res://Audio/lightkeepersfx/SaveBuy.wav" id="16_pwbfg"]
+[ext_resource type="AudioStream" uid="uid://cloagixk13v8p" path="res://Audio/lightkeepersfx/Select1.wav" id="17_bfkoy"]
+[ext_resource type="AudioStream" uid="uid://bb2guwv83tba7" path="res://Audio/lightkeepersfx/Select2.wav" id="18_y48b1"]
+[ext_resource type="AudioStream" uid="uid://dqhoklncet0vo" path="res://Audio/lightkeepersfx/Select3.wav" id="19_5rx8c"]
+[ext_resource type="AudioStream" uid="uid://bugunb74gq3fd" path="res://Audio/songs/lightkeepermenu.wav" id="20_pwbfg"]
+[ext_resource type="AudioStream" uid="uid://cglov7jck8wci" path="res://Audio/lightkeepersfx/Buyfail.wav" id="20_y48b1"]
+[ext_resource type="AudioStream" uid="uid://i15goqe81eoq" path="res://Audio/lightkeepersfx/Danger.wav" id="21_5rx8c"]
+[ext_resource type="AudioStream" uid="uid://dsucdhici7wsa" path="res://Audio/songs/litekprswim1.wav" id="21_bfkoy"]
+[ext_resource type="AudioStream" uid="uid://dxj3wxaqkpmh" path="res://Audio/lightkeepersfx/Pickup2.wav" id="22_vhktv"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_gya7g"]
 atlas = ExtResource("3_aouxq")
@@ -161,39 +173,7 @@ texture_under = ExtResource("2_uvgop")
 texture_over = ExtResource("3_1j06g")
 texture_progress = ExtResource("4_t62sk")
 
-[node name="MainMenuControl" type="Control" parent="."]
-unique_name_in_owner = true
-layout_mode = 3
-anchors_preset = 0
-offset_right = 321.0
-offset_bottom = 321.0
-mouse_filter = 2
-
-[node name="MainMenu" type="TextureRect" parent="MainMenuControl"]
-layout_mode = 0
-offset_right = 320.0
-offset_bottom = 320.0
-texture = ExtResource("1_tjifb")
-stretch_mode = 5
-
-[node name="NewGame" type="Button" parent="MainMenuControl/MainMenu"]
-layout_mode = 0
-offset_left = 10.0
-offset_top = 168.0
-offset_right = 70.0
-offset_bottom = 228.0
-flat = true
-
-[node name="Quit" type="Button" parent="MainMenuControl/MainMenu"]
-layout_mode = 0
-offset_left = 250.0
-offset_top = 168.0
-offset_right = 310.0
-offset_bottom = 228.0
-flat = true
-
 [node name="UpgradeMenuControl" type="Control" parent="."]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 320.0
@@ -345,6 +325,45 @@ offset_bottom = 270.0
 focus_mode = 0
 flat = true
 
+[node name="MainMenuControl" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_right = 321.0
+offset_bottom = 321.0
+mouse_filter = 2
+
+[node name="MainMenu" type="TextureRect" parent="MainMenuControl"]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 320.0
+texture = ExtResource("1_tjifb")
+stretch_mode = 5
+
+[node name="NewGame" type="Button" parent="MainMenuControl/MainMenu"]
+layout_mode = 0
+offset_left = 34.0
+offset_top = 160.0
+offset_right = 94.0
+offset_bottom = 220.0
+flat = true
+
+[node name="Quit" type="Button" parent="MainMenuControl/MainMenu"]
+layout_mode = 0
+offset_left = 226.0
+offset_top = 160.0
+offset_right = 286.0
+offset_bottom = 220.0
+flat = true
+
+[node name="Settings" type="Button" parent="MainMenuControl/MainMenu"]
+layout_mode = 0
+offset_left = 130.0
+offset_top = 160.0
+offset_right = 190.0
+offset_bottom = 220.0
+flat = true
+
 [node name="Pause" type="Control" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -367,33 +386,9 @@ anchors_preset = -1
 anchor_right = 0.025
 anchor_bottom = 0.025
 offset_left = 133.0
-offset_top = 66.0
+offset_top = 106.0
 offset_right = 187.975
-offset_bottom = 73.975
-focus_mode = 0
-flat = true
-
-[node name="Save" type="Button" parent="Pause"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.025
-anchor_bottom = 0.025
-offset_left = 133.0
-offset_top = 96.0
-offset_right = 187.975
-offset_bottom = 103.975
-focus_mode = 0
-flat = true
-
-[node name="Load" type="Button" parent="Pause"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 0.025
-anchor_bottom = 0.025
-offset_left = 133.0
-offset_top = 126.0
-offset_right = 187.975
-offset_bottom = 133.975
+offset_bottom = 113.975
 focus_mode = 0
 flat = true
 
@@ -403,9 +398,9 @@ anchors_preset = -1
 anchor_right = 0.025
 anchor_bottom = 0.025
 offset_left = 133.0
-offset_top = 156.0
+offset_top = 138.0
 offset_right = 187.975
-offset_bottom = 163.975
+offset_bottom = 145.975
 focus_mode = 0
 flat = true
 
@@ -415,11 +410,75 @@ anchors_preset = -1
 anchor_right = 0.025
 anchor_bottom = 0.025
 offset_left = 133.0
-offset_top = 186.0
+offset_top = 170.0
 offset_right = 187.975
-offset_bottom = 193.975
+offset_bottom = 177.975
 focus_mode = 0
 flat = true
+
+[node name="Settings" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 321.0
+offset_bottom = 321.0
+mouse_filter = 2
+
+[node name="SettingsMenu" type="TextureRect" parent="Settings"]
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 320.0
+texture = ExtResource("12_bfkoy")
+stretch_mode = 5
+
+[node name="Back" type="Button" parent="Settings"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.025
+anchor_bottom = 0.025
+offset_left = 133.0
+offset_top = 199.0
+offset_right = 187.975
+offset_bottom = 206.975
+focus_mode = 0
+flat = true
+
+[node name="Master" type="HSlider" parent="Settings"]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 109.0
+offset_right = 229.0
+offset_bottom = 125.0
+scale = Vector2(0.75, 0.75)
+max_value = 1.0
+step = 0.001
+script = ExtResource("13_cpimh")
+bus_name = "Master"
+
+[node name="Music" type="HSlider" parent="Settings"]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 132.0
+offset_right = 229.0
+offset_bottom = 148.0
+scale = Vector2(0.75, 0.75)
+max_value = 1.0
+step = 0.001
+script = ExtResource("13_cpimh")
+bus_name = "Music"
+
+[node name="SFX" type="HSlider" parent="Settings"]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 154.0
+offset_right = 229.0
+offset_bottom = 170.0
+scale = Vector2(0.75, 0.75)
+max_value = 1.0
+step = 0.001
+script = ExtResource("13_cpimh")
+bus_name = "SFX"
 
 [node name="AngerLose" type="Control" parent="."]
 unique_name_in_owner = true
@@ -463,6 +522,39 @@ offset_bottom = 309.476
 focus_mode = 0
 flat = true
 
+[node name="Nights2" type="Label" parent="AngerLose"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 119.0
+offset_top = 272.0
+offset_right = 255.0
+offset_bottom = 295.0
+scale = Vector2(0.5, 0.5)
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sparks2" type="Label" parent="AngerLose"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 119.0
+offset_top = 286.972
+offset_right = 255.0
+offset_bottom = 309.972
+scale = Vector2(0.5, 0.5)
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Boats2" type="Label" parent="AngerLose"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 119.0
+offset_top = 303.941
+offset_right = 255.0
+offset_bottom = 326.941
+scale = Vector2(0.5, 0.5)
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="LightLose" type="Control" parent="."]
 unique_name_in_owner = true
 visible = false
@@ -503,23 +595,102 @@ offset_bottom = 309.975
 focus_mode = 0
 flat = true
 
+[node name="Nights" type="Label" parent="LightLose"]
+unique_name_in_owner = true
+offset_left = 119.0
+offset_top = 272.0
+offset_right = 255.0
+offset_bottom = 295.0
+scale = Vector2(0.5, 0.5)
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sparks" type="Label" parent="LightLose"]
+unique_name_in_owner = true
+offset_left = 119.0
+offset_top = 286.972
+offset_right = 255.0
+offset_bottom = 309.972
+scale = Vector2(0.5, 0.5)
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Boats" type="Label" parent="LightLose"]
+unique_name_in_owner = true
+offset_left = 119.0
+offset_top = 303.941
+offset_right = 255.0
+offset_bottom = 326.941
+scale = Vector2(0.5, 0.5)
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 &"": SubResource("AnimationLibrary_lw2ej")
 }
 
-[connection signal="pressed" from="MainMenuControl/MainMenu/NewGame" to="." method="_on_new_game_pressed"]
-[connection signal="pressed" from="MainMenuControl/MainMenu/Quit" to="." method="_on_quit_pressed"]
+[node name="Continue" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_b02mf")
+bus = &"SFX"
+
+[node name="Pause2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("15_b02mf")
+volume_db = -10.0
+pitch_scale = 4.0
+bus = &"SFX"
+
+[node name="Buy" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("16_pwbfg")
+bus = &"SFX"
+
+[node name="Select1" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("17_bfkoy")
+bus = &"SFX"
+
+[node name="Select2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("18_y48b1")
+bus = &"SFX"
+
+[node name="Select3" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("19_5rx8c")
+bus = &"SFX"
+
+[node name="Buyfail" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("20_y48b1")
+bus = &"SFX"
+
+[node name="Danger" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("21_5rx8c")
+bus = &"SFX"
+
+[node name="Pickup2" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("22_vhktv")
+bus = &"SFX"
+
+[node name="MainMenuSong" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("20_pwbfg")
+bus = &"Music"
+
+[node name="SwimSongs" type="Node" parent="."]
+
+[node name="Swim1" type="AudioStreamPlayer2D" parent="SwimSongs"]
+unique_name_in_owner = true
+stream = ExtResource("21_bfkoy")
+bus = &"Music"
+
 [connection signal="visibility_changed" from="UpgradeMenuControl" to="." method="_on_upgrade_menu_control_visibility_changed"]
 [connection signal="pressed" from="UpgradeMenuControl/Buy" to="." method="_on_buy_pressed"]
 [connection signal="pressed" from="UpgradeMenuControl/Continue" to="." method="_on_continue_pressed"]
 [connection signal="pressed" from="UpgradeMenuControl/ScrollRight" to="." method="_on_scroll_right_pressed"]
 [connection signal="pressed" from="UpgradeMenuControl/ScrollLeft" to="." method="_on_scroll_left_pressed"]
+[connection signal="pressed" from="MainMenuControl/MainMenu/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="MainMenuControl/MainMenu/Quit" to="." method="_on_quit_pressed"]
+[connection signal="pressed" from="MainMenuControl/MainMenu/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="Pause/Resume" to="." method="_on_resume_pressed"]
-[connection signal="pressed" from="Pause/Save" to="." method="_on_save_pressed"]
-[connection signal="pressed" from="Pause/Load" to="." method="_on_load_pressed"]
 [connection signal="pressed" from="Pause/Settings" to="." method="_on_settings_pressed"]
 [connection signal="pressed" from="Pause/QuitPause" to="." method="_on_quit_pause_pressed"]
+[connection signal="pressed" from="Settings/Back" to="." method="_on_back_pressed"]
 [connection signal="pressed" from="AngerLose/NewGameAnger" to="." method="_on_new_game_anger_pressed"]
 [connection signal="pressed" from="AngerLose/QuitTitleAnger" to="." method="_on_quit_title_anger_pressed"]
 [connection signal="pressed" from="LightLose/NewGameLight" to="." method="_on_new_game_light_pressed"]
