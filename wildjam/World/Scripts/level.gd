@@ -1,7 +1,7 @@
 extends TileMapLayer
 
 # max of around 30 rooms, approximately 20 for up, 10 for sides
-@export var height : int = 20
+@export var height : int = 15
 var turns : int
 
 
@@ -25,7 +25,6 @@ func _ready() -> void:
 		var nextCorner = Vector2(lastCorner.x + rand_len(turn_length),curCorner.y)
 		posArr.append(curCorner)
 		posArr.append(nextCorner)
-
 	draw_paths(posArr)
 	for pos in posArr:
 		if pos == posArr[posArr.size()-1] or pos == posArr[0]:

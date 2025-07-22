@@ -49,9 +49,28 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if angerLose.visible or lightLose.visible:
+		if !$EndMenuSong.playing:
+			$MainMenuSong.stop()
+			$PauseMenuSong.stop()
+			$UpgradeMenuSong.stop()
+			swim_1.stop()
+			$EndMenuSong.play()
 		lose_labels()
 	if upgrade_menu_control.visible:
 		gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+		if !main_menu_control.visible and !$UpgradeMenuSong.playing and !%Pause.visible:
+			$MainMenuSong.stop()
+			$EndMenuSong.stop()
+			%Swim1.stop()
+			$PauseMenuSong.stop()
+			$UpgradeMenuSong.play()
+	if gameNode.process_mode == Node.PROCESS_MODE_PAUSABLE:
+		if !%Swim1.playing:
+			$MainMenuSong.stop()
+			$EndMenuSong.stop()
+			$PauseMenuSong.stop()
+			$UpgradeMenuSong.stop()
+			%Swim1.play()
 	if gameNode.process_mode == Node.PROCESS_MODE_PAUSABLE:
 		lightMeter.value -= lightDecayRate
 		if !fish.onScreen.is_on_screen():
@@ -90,6 +109,8 @@ func _on_new_game_pressed() -> void:
 	boat.show()
 	boat.health = boat.max_health
 	$MainMenuSong.stop()
+	$UpgradeMenuSong.stop()
+	$EndMenuSong.stop()
 	%MainMenuControl.hide()
 	continueSFX.play()
 	gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -134,7 +155,7 @@ func on_end_reached() -> void:
 		owner.add_child(newBoat)
 		
 		boat = newBoat
-	Global.day += 1
+	Global.nights += 1
 	
 	# creating new level assuming they will continue
 	gameNode.layout.height += 1
@@ -204,14 +225,16 @@ func _on_scroll_left_pressed() -> void:
 	show_upgrade_info()
 
 func show_upgrade_info() -> void:
-	var cost_increase : int = 2 * upgradeInv[prevMiddle.frame]
+	var cost_increase : int = 3 * upgradeInv[prevMiddle.frame]
 	%BoatsSaved.text = str(Global.boats)
 	%Money.text = str(Global.money)
 	match prevMiddle.frame:
 		Global.UPGRADES.LIGHTCAPACITY,Global.UPGRADES.LIGHTPOTENCY,Global.UPGRADES.LIGHTPRESERVER:
 			cost.text = str(5 + cost_increase)
-		Global.UPGRADES.MOVESPEED,Global.UPGRADES.STRONGERHULL,Global.UPGRADES.BLOWHOLE:
+		Global.UPGRADES.MOVESPEED:
 			cost.text = str(15 + cost_increase)
+		Global.UPGRADES.STRONGERHULL,Global.UPGRADES.BLOWHOLE:
+			cost.text = str(25)
 	
 	var text : String
 	match prevMiddle.frame:
@@ -280,17 +303,33 @@ func reload_default() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_released("pause"):
+		if angerLose.visible or lightLose.visible:
+			return
 		if %Pause.visible:
 			gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE
 			%Pause.hide()
+			$PauseMenuSong.stop()
 			$Continue.play()
+			if %MainMenuControl.visible: $MainMenuSong.play()
+			if %AngerLose.visible or %LightLose.visible: $EndMenuSong.play()
+			if %UpgradeMenu.visible: $UpgradeMenuSong.play()
+			if !%MainMenuControl.visible and %AngerLose.visible and %LightLose.visible and !%UpgradeMenu.visible: swim_1.play()
 			return
 		$Pause2.play()
+		$MainMenuSong.stop()
+		$UpgradeMenuSong.stop()
+		swim_1.stop()
+		$PauseMenuSong.play()
 		gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 		%Pause.show()
 
 func _on_resume_pressed() -> void:
 	continueSFX.play()
+	$PauseMenuSong.stop()
+	if %MainMenuControl.visible: $MainMenuSong.play()
+	if %AngerLose.visible or %LightLose.visible: $EndMenuSong.play()
+	if %UpgradeMenu.visible: $UpgradeMenuSong.play()
+	if !%MainMenuControl.visible and %AngerLose.visible and %LightLose.visible and !%UpgradeMenu.visible: swim_1.play()
 	gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE
 	%Pause.hide()
 	
