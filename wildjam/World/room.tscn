@@ -24,6 +24,7 @@ color = Color(1, 1, 1, 0.929412)
 tile_set = ExtResource("3_gwvhs")
 
 [node name="Area2D" type="Area2D" parent="."]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 unique_name_in_owner = true

@@ -4,6 +4,7 @@ const BOAT = preload("res://Player/Scenes/boat.tscn")
 
 @export var lightMeterMax : float = 100
 @export var lightDecayRate : float = .0833333
+@export var sparkLight : float = 60
 
 @onready var fish : Fish = get_tree().get_first_node_in_group("FISH")
 @onready var boat : Boat = get_tree().get_first_node_in_group("BOAT")
@@ -72,9 +73,10 @@ func _process(delta: float) -> void:
 			$UpgradeMenuSong.stop()
 			%Swim1.play()
 	if gameNode.process_mode == Node.PROCESS_MODE_PAUSABLE:
-		lightMeter.value -= lightDecayRate
+		#lightMeter.value -= lightDecayRate
 		if !fish.onScreen.is_on_screen():
-			lightMeter.value -= lightDecayRate
+			pass
+			#lightMeter.value -= lightDecayRate
 		
 		if abs(lightMeter.value - 30) <= 1 :
 			$Danger.play()
@@ -101,7 +103,7 @@ func on_blowhole_used() -> void:
 
 func on_light_collected() -> void:
 	$Pickup2.play()
-	lightMeter.value += 60
+	lightMeter.value += sparkLight
 	Global.money += 1
 	pass
 
@@ -115,7 +117,7 @@ func _on_new_game_pressed() -> void:
 	continueSFX.play()
 	gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE
 	swim_1.play()
-	
+	create_level()
 
 func _on_quit_pressed() -> void:
 	continueSFX.play()
@@ -148,18 +150,10 @@ func on_end_reached() -> void:
 			gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 			anim.play("GameOverAnger")
 			return
-		var newBoat = BOAT.instantiate()
-		newBoat.global_position = fish.global_position
-		newBoat.max_health += 1 if upgradeInv[Global.UPGRADES.STRONGERHULL] >= 1 else 0
-		newBoat.health = newBoat.max_health
-		owner.add_child(newBoat)
-		
-		boat = newBoat
 	Global.nights += 1
 	
 	# creating new level assuming they will continue
 	gameNode.layout.height += 1
-	create_level()
 	gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 	upgrade_menu_control.show()
 func create_level() -> void:
@@ -194,10 +188,12 @@ func can_purchase_and_apply() -> bool:
 			lightMeter.value = lightMeterMax
 		Global.UPGRADES.LIGHTPOTENCY:
 			maxLightScale += Vector2(.25,.25)
+			sparkLight += 10
 		Global.UPGRADES.LIGHTPRESERVER:
 			lightDecayRate *= .9
 		Global.UPGRADES.MOVESPEED:
 			fish.SPEED += 25
+			
 		Global.UPGRADES.STRONGERHULL:
 			if upgradeInv[prevMiddle.frame] >= 1:
 				return false
@@ -289,6 +285,7 @@ func _on_new_game_light_pressed() -> void:
 	continueSFX.play()
 	lightLose.hide()
 	reload_default()
+
 func reload_default() -> void:
 	upgrade_menu_control.show()
 	Global.money = 0

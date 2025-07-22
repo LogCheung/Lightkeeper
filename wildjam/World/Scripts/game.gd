@@ -76,9 +76,12 @@ func create_rooms(cornerArray : Array, endPos : Vector2,startPos : Vector2) -> v
 	create_limit_polygon(cornerRoomArray)
 	fish.global_position = cornerRoomArray.front().center
 	fish.boat.global_position = fish.global_position
+	fish.boat.visible = true
 	%Camera.global_position = cornerRoomArray.front().center
 
 func create_limit_polygon(corRoomArray : Array[Room]) -> void:
+	for child in colShapesNode.get_children():
+		child.queue_free()
 	for i in range(corRoomArray.size() - 1):
 		var limPoints : Array = []
 		var curRoom = corRoomArray[i]
@@ -111,11 +114,13 @@ func create_limit_polygon(corRoomArray : Array[Room]) -> void:
 	
 	var limShapes = colShapesNode.get_children()
 	for area : Area2D in limShapes:
-		area.body_entered.connect(area_entered.bind(area))
+		if area.body_entered.is_connected(body_entered):
+			continue
+		area.body_entered.connect(body_entered.bind(area))
 	%PhanCam.set_limit_target(limShapes.front().get_children().front().get_path())
 	
 	
-func area_entered(body : Node2D, area : Area2D) -> void:
+func body_entered(body : Node2D, area : Area2D) -> void:
 	await fish.center_reached
 	if body.is_in_group("CAMERAMAN"):
 		if is_instance_valid(area):
