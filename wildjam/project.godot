@@ -54,6 +54,7 @@ GAMENODE=""
 MAINUI=""
 WORLD=""
 AUDIONODE=""
+MENU=""
 
 [input]
 

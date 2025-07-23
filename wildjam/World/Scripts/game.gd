@@ -33,7 +33,6 @@ func create_rooms(cornerArray : Array, endPos : Vector2,startPos : Vector2) -> v
 		var room = ROOM.instantiate()
 		room.gridPos = cell
 		if cornerArray.has(Vector2(cell)):
-			roomCounter -= 1
 			room.is_corner = true
 			room.is_end = true if endPos == Vector2(cell) else false
 			room.is_start = true if startPos == Vector2(cell) else false
@@ -75,7 +74,7 @@ func create_rooms(cornerArray : Array, endPos : Vector2,startPos : Vector2) -> v
 	
 	create_limit_polygon(cornerRoomArray)
 	fish.global_position = cornerRoomArray.front().center
-	fish.boat.global_position = fish.global_position
+	fish.boat.global_position = fish.global_position + Vector2(0,64)
 	fish.boat.visible = true
 	%Camera.global_position = cornerRoomArray.front().center
 

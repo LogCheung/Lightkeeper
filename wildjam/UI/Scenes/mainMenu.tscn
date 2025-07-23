@@ -79,6 +79,20 @@ tracks/1/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"show_loss_screen"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_lw2ej"]
 resource_name = "GameOverLight"
@@ -108,6 +122,20 @@ tracks/1/keys = {
 "update": 1,
 "values": [true]
 }
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"show_loss_screen"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_v5i84"]
 length = 0.001
@@ -127,18 +155,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MainMenuControl:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 3.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [false, true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lw2ej"]
@@ -176,7 +192,8 @@ texture_under = ExtResource("2_uvgop")
 texture_over = ExtResource("3_1j06g")
 texture_progress = ExtResource("4_t62sk")
 
-[node name="UpgradeMenuControl" type="Control" parent="."]
+[node name="UpgradeMenuControl" type="Control" parent="." groups=["MENU"]]
+visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 320.0
@@ -328,7 +345,7 @@ offset_bottom = 270.0
 focus_mode = 0
 flat = true
 
-[node name="MainMenuControl" type="Control" parent="."]
+[node name="MainMenuControl" type="Control" parent="." groups=["MENU"]]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
@@ -367,7 +384,7 @@ offset_right = 190.0
 offset_bottom = 220.0
 flat = true
 
-[node name="Pause" type="Control" parent="."]
+[node name="Pause" type="Control" parent="." groups=["MENU"]]
 unique_name_in_owner = true
 visible = false
 layout_mode = 3
@@ -419,7 +436,7 @@ offset_bottom = 177.975
 focus_mode = 0
 flat = true
 
-[node name="Settings" type="Control" parent="."]
+[node name="Settings" type="Control" parent="." groups=["MENU"]]
 unique_name_in_owner = true
 visible = false
 layout_mode = 3
@@ -483,9 +500,8 @@ step = 0.001
 script = ExtResource("13_cpimh")
 bus_name = "SFX"
 
-[node name="AngerLose" type="Control" parent="."]
+[node name="AngerLose" type="Control" parent="." groups=["MENU"]]
 unique_name_in_owner = true
-visible = false
 modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 0
@@ -558,9 +574,9 @@ scale = Vector2(0.5, 0.5)
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="LightLose" type="Control" parent="."]
+[node name="LightLose" type="Control" parent="." groups=["MENU"]]
 unique_name_in_owner = true
-visible = false
+modulate = Color(1, 1, 1, 0)
 layout_mode = 3
 anchors_preset = 0
 offset_right = 321.0
@@ -641,7 +657,7 @@ stream = ExtResource("15_b02mf")
 max_distance = 1e+06
 bus = &"SFX"
 
-[node name="Pause2" type="AudioStreamPlayer2D" parent="."]
+[node name="PauseSFX" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("15_b02mf")
 volume_db = -10.0
 pitch_scale = 4.0
@@ -683,31 +699,36 @@ stream = ExtResource("22_vhktv")
 max_distance = 1e+06
 bus = &"SFX"
 
-[node name="MainMenuSong" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("20_pwbfg")
-max_distance = 1e+06
-bus = &"Music"
-
-[node name="UpgradeMenuSong" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("25_bc00k")
-max_distance = 1e+06
-bus = &"Music"
-
-[node name="PauseMenuSong" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("26_iw4rj")
-max_distance = 1e+06
-bus = &"Music"
-
-[node name="EndMenuSong" type="AudioStreamPlayer2D" parent="."]
-stream = ExtResource("27_iw4rj")
-max_distance = 1e+06
-bus = &"Music"
-
 [node name="SwimSongs" type="Node" parent="."]
+unique_name_in_owner = true
 
 [node name="Swim1" type="AudioStreamPlayer2D" parent="SwimSongs"]
 unique_name_in_owner = true
 stream = ExtResource("21_bfkoy")
+max_distance = 1e+06
+bus = &"Music"
+
+[node name="MainMenuSong" type="AudioStreamPlayer2D" parent="SwimSongs"]
+unique_name_in_owner = true
+stream = ExtResource("20_pwbfg")
+max_distance = 1e+06
+bus = &"Music"
+
+[node name="UpgradeMenuSong" type="AudioStreamPlayer2D" parent="SwimSongs"]
+unique_name_in_owner = true
+stream = ExtResource("25_bc00k")
+max_distance = 1e+06
+bus = &"Music"
+
+[node name="PauseMenuSong" type="AudioStreamPlayer2D" parent="SwimSongs"]
+unique_name_in_owner = true
+stream = ExtResource("26_iw4rj")
+max_distance = 1e+06
+bus = &"Music"
+
+[node name="EndMenuSong" type="AudioStreamPlayer2D" parent="SwimSongs"]
+unique_name_in_owner = true
+stream = ExtResource("27_iw4rj")
 max_distance = 1e+06
 bus = &"Music"
 

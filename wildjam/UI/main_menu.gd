@@ -36,7 +36,7 @@ var maxLightScale = Vector2(5.0,5.0)
 
 # MAINMENU AND MAIN UI
 func _ready() -> void:
-	$MainMenuSong.play()
+	%MainMenuSong.play()
 	%UpgradeMenu.play("default")
 	end_reached.connect(on_end_reached)
 	
@@ -47,36 +47,19 @@ func _ready() -> void:
 	fish.light_collected.connect(on_light_collected)
 	
 	gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+	
+	# Hide all menus besides main
+	for menu in get_tree().get_nodes_in_group("MENU"):
+		menu.hide()
+	main_menu_control.show()
 
 func _process(delta: float) -> void:
-	if angerLose.visible or lightLose.visible:
-		if !$EndMenuSong.playing:
-			$MainMenuSong.stop()
-			$PauseMenuSong.stop()
-			$UpgradeMenuSong.stop()
-			swim_1.stop()
-			$EndMenuSong.play()
-		lose_labels()
-	if upgrade_menu_control.visible:
-		gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
-		if !main_menu_control.visible and !$UpgradeMenuSong.playing and !%Pause.visible:
-			$MainMenuSong.stop()
-			$EndMenuSong.stop()
-			%Swim1.stop()
-			$PauseMenuSong.stop()
-			$UpgradeMenuSong.play()
 	if gameNode.process_mode == Node.PROCESS_MODE_PAUSABLE:
-		if !%Swim1.playing:
-			$MainMenuSong.stop()
-			$EndMenuSong.stop()
-			$PauseMenuSong.stop()
-			$UpgradeMenuSong.stop()
-			%Swim1.play()
-	if gameNode.process_mode == Node.PROCESS_MODE_PAUSABLE:
-		#lightMeter.value -= lightDecayRate
+		play_song(%Swim1)
+		lightMeter.value -= lightDecayRate
 		if !fish.onScreen.is_on_screen():
 			pass
-			#lightMeter.value -= lightDecayRate
+			lightMeter.value -= lightDecayRate
 		
 		if abs(lightMeter.value - 30) <= 1 :
 			$Danger.play()
@@ -88,15 +71,6 @@ func _process(delta: float) -> void:
 	
 	fish.light.scale = Vector2(2.0,2.0) + (Vector2(0.03,.03) * lightMeter.value)
 
-func lose_labels() -> void:
-	%Nights.text = str(Global.nights)
-	%Sparks.text = str(Global.money)
-	%Boats.text = str(Global.boats)
-	%Nights2.text = str(Global.nights)
-	%Sparks2.text = str(Global.money)
-	%Boats2.text = str(Global.boats)
-
-
 func on_blowhole_used() -> void:
 	lightMeter.value -= 15 
 	pass
@@ -107,17 +81,39 @@ func on_light_collected() -> void:
 	Global.money += 1
 	pass
 
+func play_song(song : AudioStreamPlayer2D) -> void:
+	if song.playing : return
+	var otherSongs = %SwimSongs.get_children()
+	for s : AudioStreamPlayer2D in otherSongs:
+		s.stop()
+	song.play()
+	
+# assuming all children of %SwimSongs are AudioStreamPlayer2Ds
+func get_song_playing() -> AudioStreamPlayer2D:
+	for s in %SwimSongs.get_children():
+		if s == %PauseMenuSong:
+			continue
+		if s.playing or s.stream_paused:
+			return s
+	return null
+	
 func _on_new_game_pressed() -> void:
+	create_level()
+	main_menu_control.hide()
+	upgrade_menu_control.show()
+
+func create_level() -> void:
+	# make sure stats are set to normal
+	gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE
 	boat.show()
 	boat.health = boat.max_health
-	$MainMenuSong.stop()
-	$UpgradeMenuSong.stop()
-	$EndMenuSong.stop()
-	%MainMenuControl.hide()
+	lightMeter.value = lightMeterMax
+	
 	continueSFX.play()
-	gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE
-	swim_1.play()
-	create_level()
+	play_song(%Swim1)
+	
+	gameNode.layout._ready()
+	gameNode.continuing = true
 
 func _on_quit_pressed() -> void:
 	continueSFX.play()
@@ -154,16 +150,16 @@ func on_end_reached() -> void:
 	
 	# creating new level assuming they will continue
 	gameNode.layout.height += 1
+	create_level()
 	gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
 	upgrade_menu_control.show()
-func create_level() -> void:
-	lightMeter.value = lightMeterMax
-	gameNode.layout._ready()
-	gameNode.continuing = true
 	
 func _on_upgrade_menu_control_visibility_changed() -> void:
-	await get_tree().create_timer(.1).timeout
+	await get_tree().create_timer(.1).timeout # for loading time
 	if upgrade_menu_control.visible:
+		gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+		play_song(%UpgradeMenuSong)
+		
 		prevLeft.frame = max_frame
 		prevMiddle.frame = min_frame
 		prevRight.frame = min_frame + 1
@@ -260,9 +256,22 @@ func _on_continue_pressed() -> void:
 	await anim.animation_finished
 	upgrade_menu_control.hide()
 	upgrade_menu_control.modulate.a8 = 255
-	_on_new_game_pressed()
+	create_level()
 
 # Lose MENUS
+
+func show_loss_screen() -> void:
+	play_song(%EndMenuSong)
+	show_lose_labels()
+
+func show_lose_labels() -> void:
+	%Nights.text = str(Global.nights)
+	%Sparks.text = str(Global.money)
+	%Boats.text = str(Global.boats)
+	%Nights2.text = str(Global.nights)
+	%Sparks2.text = str(Global.money)
+	%Boats2.text = str(Global.boats)
+
 func _on_quit_title_anger_pressed() -> void:
 	select3.play()
 	angerLose.hide()
@@ -280,55 +289,56 @@ func _on_new_game_anger_pressed() -> void:
 	continueSFX.play()
 	angerLose.hide()
 	reload_default()
+	create_level()
+	upgrade_menu_control.show()
 
 func _on_new_game_light_pressed() -> void:
 	continueSFX.play()
 	lightLose.hide()
 	reload_default()
+	create_level()
+	upgrade_menu_control.show()
 
 func reload_default() -> void:
-	upgrade_menu_control.show()
 	Global.money = 0
 	Global.boats = 0
 	Global.anger = 0
 	Global.redempCounter = 5
 	Global.redempMax = 5
 	gameNode.layout.height = 20
-	create_level()
 
 # Pause Menu/ Saves
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_released("pause"):
-		if angerLose.visible or lightLose.visible:
-			return
+		var currentSong = get_song_playing()
 		if %Pause.visible:
-			gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE
+			%Pause.z_index = 0
+			%Settings.z_index = 0
+			if !gameNode.process_mode == Node.PROCESS_MODE_WHEN_PAUSED:
+				gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE 
 			%Pause.hide()
-			$PauseMenuSong.stop()
-			$Continue.play()
-			if %MainMenuControl.visible: $MainMenuSong.play()
-			if %AngerLose.visible or %LightLose.visible: $EndMenuSong.play()
-			if %UpgradeMenu.visible: $UpgradeMenuSong.play()
-			if !%MainMenuControl.visible and %AngerLose.visible and %LightLose.visible and !%UpgradeMenu.visible: swim_1.play()
+			continueSFX.play()
+			%PauseMenuSong.stop()
+			if currentSong : currentSong.stream_paused = false
 			return
-		$Pause2.play()
-		$MainMenuSong.stop()
-		$UpgradeMenuSong.stop()
-		swim_1.stop()
-		$PauseMenuSong.play()
+		
+		%Pause.z_index = 10
+		%Settings.z_index = 11
 		gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+		if currentSong : currentSong.stream_paused = true
+		%PauseMenuSong.play()
+		$PauseSFX.play()
 		%Pause.show()
 
 func _on_resume_pressed() -> void:
-	continueSFX.play()
-	$PauseMenuSong.stop()
-	if %MainMenuControl.visible: $MainMenuSong.play()
-	if %AngerLose.visible or %LightLose.visible: $EndMenuSong.play()
-	if %UpgradeMenu.visible: $UpgradeMenuSong.play()
-	if !%MainMenuControl.visible and %AngerLose.visible and %LightLose.visible and !%UpgradeMenu.visible: swim_1.play()
-	gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE
+	var currentSong = get_song_playing()
+	if !gameNode.process_mode == Node.PROCESS_MODE_WHEN_PAUSED:
+		gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE 
 	%Pause.hide()
+	continueSFX.play()
+	%PauseMenuSong.stop()
+	if currentSong : currentSong.stream_paused = false
 	
 func _on_settings_pressed() -> void:
 	$Select1.play()
