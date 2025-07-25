@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://cfeea0hej8485"
-path="res://.godot/imported/RockBreak.wav-49f61f3e82986e2926d3d3bb4488d377.sample"
+path="res://.godot/imported/RockBreak.wav-930901e60c3b46f7e6d5b4fcecf59587.sample"
 
 [deps]
 
-source_file="res://Audio/lightkeepersfx/RockBreak.wav"
-dest_files=["res://.godot/imported/RockBreak.wav-49f61f3e82986e2926d3d3bb4488d377.sample"]
+source_file="res://Audio/lightkeepersfx/SFX/RockBreak.wav"
+dest_files=["res://.godot/imported/RockBreak.wav-930901e60c3b46f7e6d5b4fcecf59587.sample"]
 
 [params]
 

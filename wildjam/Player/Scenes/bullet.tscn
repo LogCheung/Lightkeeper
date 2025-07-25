@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://frjoty72xde3" path="res://Player/Scenes/bullet.gd" id="1_rmehu"]
 [ext_resource type="Texture2D" uid="uid://c3r1jrnbk50fr" path="res://UI/Assets/lightkeepersprites.png" id="2_rmehu"]
-[ext_resource type="AudioStream" uid="uid://cfeea0hej8485" path="res://Audio/lightkeepersfx/RockBreak.wav" id="3_wp18h"]
+[ext_resource type="AudioStream" uid="uid://cfeea0hej8485" path="res://Audio/lightkeepersfx/SFX/RockBreak.wav" id="3_wp18h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rmehu"]
 size = Vector2(4, 4)

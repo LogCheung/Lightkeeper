@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://gjoske5oatte"
-path="res://.godot/imported/Wave.wav-db626d1ebc4e6eb705614fb883aa4baa.sample"
+path="res://.godot/imported/Wave.wav-8592fd3b382feab3e71eae59295d2778.sample"
 
 [deps]
 
-source_file="res://Audio/lightkeepersfx/Wave.wav"
-dest_files=["res://.godot/imported/Wave.wav-db626d1ebc4e6eb705614fb883aa4baa.sample"]
+source_file="res://Audio/lightkeepersfx/SFX/Wave.wav"
+dest_files=["res://.godot/imported/Wave.wav-8592fd3b382feab3e71eae59295d2778.sample"]
 
 [params]
 

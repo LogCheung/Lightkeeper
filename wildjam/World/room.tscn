@@ -1,8 +1,7 @@
-[gd_scene load_steps=5 format=4 uid="uid://chi2isbw6te8r"]
+[gd_scene load_steps=4 format=4 uid="uid://chi2isbw6te8r"]
 
 [ext_resource type="Script" uid="uid://d11xqvg4v1avk" path="res://World/Scripts/room.gd" id="1_sy3uv"]
 [ext_resource type="TileSet" uid="uid://cyfhv6wkwmtrs" path="res://TileSet/Resources/StandardEasy.tres" id="2_sy3uv"]
-[ext_resource type="TileSet" uid="uid://dblu7cyw2h5v5" path="res://TileSet/Resources/StandardMedium.tres" id="3_gwvhs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sy3uv"]
 size = Vector2(40, 40)
@@ -21,7 +20,7 @@ offset_bottom = 320.0
 color = Color(1, 1, 1, 0.929412)
 
 [node name="Obstacles" type="TileMapLayer" parent="."]
-tile_set = ExtResource("3_gwvhs")
+tile_set = ExtResource("2_sy3uv")
 
 [node name="Area2D" type="Area2D" parent="."]
 visible = false

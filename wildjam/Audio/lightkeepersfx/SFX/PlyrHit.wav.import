@@ -3,12 +3,12 @@
 importer="wav"
 type="AudioStreamWAV"
 uid="uid://dvqqji6u78k7k"
-path="res://.godot/imported/PlyrHit.wav-bd07e2ce37423f6b31247466af662e25.sample"
+path="res://.godot/imported/PlyrHit.wav-9ee5ce9420d4980c82fa4b9b22f23998.sample"
 
 [deps]
 
-source_file="res://Audio/lightkeepersfx/PlyrHit.wav"
-dest_files=["res://.godot/imported/PlyrHit.wav-bd07e2ce37423f6b31247466af662e25.sample"]
+source_file="res://Audio/lightkeepersfx/SFX/PlyrHit.wav"
+dest_files=["res://.godot/imported/PlyrHit.wav-9ee5ce9420d4980c82fa4b9b22f23998.sample"]
 
 [params]
 

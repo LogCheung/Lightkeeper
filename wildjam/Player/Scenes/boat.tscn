@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cnu173j0tv1oc" path="res://Player/Scenes/boat.gd" id="1_u0fnj"]
 [ext_resource type="Texture2D" uid="uid://06a1m708hhga" path="res://Player/Assets/boat.png" id="2_u0fnj"]
-[ext_resource type="AudioStream" uid="uid://bqjoypwregulv" path="res://Audio/lightkeepersfx/Damage.wav" id="3_ajlkq"]
-[ext_resource type="AudioStream" uid="uid://b1jkdnghmfp7e" path="res://Audio/lightkeepersfx/Break.wav" id="3_mchmb"]
+[ext_resource type="AudioStream" uid="uid://bqjoypwregulv" path="res://Audio/lightkeepersfx/SFX/Damage.wav" id="3_ajlkq"]
+[ext_resource type="AudioStream" uid="uid://b1jkdnghmfp7e" path="res://Audio/lightkeepersfx/SFX/Break.wav" id="3_mchmb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_nfw3b"]
 radius = 2.0

@@ -73,6 +73,7 @@ func create_rooms(cornerArray : Array, endPos : Vector2,startPos : Vector2) -> v
 		walls.set_cell(tile,-1)
 	
 	create_limit_polygon(cornerRoomArray)
+	fish.new_night.emit()
 	fish.global_position = cornerRoomArray.front().center
 	fish.boat.global_position = fish.global_position + Vector2(0,64)
 	fish.boat.visible = true

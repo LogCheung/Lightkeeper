@@ -180,15 +180,15 @@ func can_purchase_and_apply() -> bool:
 	
 	match prevMiddle.frame:
 		Global.UPGRADES.LIGHTCAPACITY:
-			lightMeterMax += 25
+			lightMeterMax += 15
 			lightMeter.value = lightMeterMax
 		Global.UPGRADES.LIGHTPOTENCY:
-			maxLightScale += Vector2(.25,.25)
-			sparkLight += 10
+			maxLightScale += Vector2(.2,.2)
+			sparkLight += 5
 		Global.UPGRADES.LIGHTPRESERVER:
-			lightDecayRate *= .9
+			lightDecayRate *= .90
 		Global.UPGRADES.MOVESPEED:
-			fish.SPEED += 25
+			fish.SPEED += 15
 			
 		Global.UPGRADES.STRONGERHULL:
 			if upgradeInv[prevMiddle.frame] >= 1:
@@ -217,7 +217,7 @@ func _on_scroll_left_pressed() -> void:
 	show_upgrade_info()
 
 func show_upgrade_info() -> void:
-	var cost_increase : int = 3 * upgradeInv[prevMiddle.frame]
+	var cost_increase : int = 5 * upgradeInv[prevMiddle.frame]
 	%BoatsSaved.text = str(Global.boats)
 	%Money.text = str(Global.money)
 	match prevMiddle.frame:
@@ -308,21 +308,23 @@ func reload_default() -> void:
 	gameNode.layout.height = 20
 
 # Pause Menu/ Saves
-
+var prevState
 func _input(event: InputEvent) -> void:
 	if event.is_action_released("pause"):
 		var currentSong = get_song_playing()
 		if %Pause.visible:
+			%Pause.hide()
 			%Pause.z_index = 0
 			%Settings.z_index = 0
-			if !gameNode.process_mode == Node.PROCESS_MODE_WHEN_PAUSED:
+			if !prevState == Node.PROCESS_MODE_WHEN_PAUSED and !%Pause.visible:
 				gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE 
-			%Pause.hide()
+				
 			continueSFX.play()
 			%PauseMenuSong.stop()
 			if currentSong : currentSong.stream_paused = false
 			return
 		
+		prevState = gameNode.process_mode
 		%Pause.z_index = 10
 		%Settings.z_index = 11
 		gameNode.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
@@ -332,10 +334,11 @@ func _input(event: InputEvent) -> void:
 		%Pause.show()
 
 func _on_resume_pressed() -> void:
+	var prevState = gameNode.process_mode
 	var currentSong = get_song_playing()
-	if !gameNode.process_mode == Node.PROCESS_MODE_WHEN_PAUSED:
-		gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE 
 	%Pause.hide()
+	if !prevState == Node.PROCESS_MODE_WHEN_PAUSED and !%Pause.visible:
+		gameNode.process_mode = Node.PROCESS_MODE_PAUSABLE 
 	continueSFX.play()
 	%PauseMenuSong.stop()
 	if currentSong : currentSong.stream_paused = false

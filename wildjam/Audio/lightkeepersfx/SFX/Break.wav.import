@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://i15goqe81eoq"
-path="res://.godot/imported/Danger.wav-b3037f4fd497e8120ceee4fbacf5bf6b.sample"
+uid="uid://b1jkdnghmfp7e"
+path="res://.godot/imported/Break.wav-0d0cd34b99e7f0b1fb4c06e56a30f88f.sample"
 
 [deps]
 
-source_file="res://Audio/lightkeepersfx/Danger.wav"
-dest_files=["res://.godot/imported/Danger.wav-b3037f4fd497e8120ceee4fbacf5bf6b.sample"]
+source_file="res://Audio/lightkeepersfx/SFX/Break.wav"
+dest_files=["res://.godot/imported/Break.wav-0d0cd34b99e7f0b1fb4c06e56a30f88f.sample"]
 
 [params]
 

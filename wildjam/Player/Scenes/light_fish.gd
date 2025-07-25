@@ -18,12 +18,14 @@ const BULLET = preload("res://Player/Scenes/bullet.tscn")
 signal center_reached
 signal blowhole_used
 signal light_collected
+signal new_night
 
 var boat
 var cameraMan : CharacterBody2D
 var using_blowhole : bool = false
 
 func _ready() -> void:
+	new_night.connect(on_new_night)
 	center_reached.connect(switch_direction)
 	boat = get_tree().get_first_node_in_group("BOAT")
 	cameraMan = get_tree().get_first_node_in_group("CAMERAMAN")
@@ -94,3 +96,14 @@ func catch_light() -> void:
 		light_collected.emit()
 		currentRoom.tile.set_cell(cell,-1)
 	pass
+
+func on_new_night() -> void:
+	if Global.nights < 3:
+		SPEED = 120
+		CAMSPEED = 75
+	elif Global.nights < 6:
+		SPEED = 135
+		CAMSPEED = 90
+	elif Global.nights > 6:
+		SPEED = 150
+		CAMSPEED = 105

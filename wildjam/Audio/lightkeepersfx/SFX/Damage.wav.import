@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://cackfeklfehpy"
-path="res://.godot/imported/Wave2.wav-03644870c81a8e82d18a835997b21655.sample"
+uid="uid://bqjoypwregulv"
+path="res://.godot/imported/Damage.wav-c06f80dc576d4c874d34972fe7f7f32a.sample"
 
 [deps]
 
-source_file="res://Audio/lightkeepersfx/Wave2.wav"
-dest_files=["res://.godot/imported/Wave2.wav-03644870c81a8e82d18a835997b21655.sample"]
+source_file="res://Audio/lightkeepersfx/SFX/Damage.wav"
+dest_files=["res://.godot/imported/Damage.wav-c06f80dc576d4c874d34972fe7f7f32a.sample"]
 
 [params]
 

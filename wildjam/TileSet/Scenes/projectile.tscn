@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://b1x55ecu5xuev" path="res://TileSet/Scripts/projectile.gd" id="1_jxhk1"]
 [ext_resource type="Texture2D" uid="uid://cd440lbp7eb4k" path="res://TileSet/projectilesprites.png" id="2_fwehd"]
-[ext_resource type="AudioStream" uid="uid://gjoske5oatte" path="res://Audio/lightkeepersfx/Wave.wav" id="3_llrya"]
-[ext_resource type="AudioStream" uid="uid://dvqqji6u78k7k" path="res://Audio/lightkeepersfx/PlyrHit.wav" id="4_nlgfb"]
+[ext_resource type="AudioStream" uid="uid://gjoske5oatte" path="res://Audio/lightkeepersfx/SFX/Wave.wav" id="3_llrya"]
+[ext_resource type="AudioStream" uid="uid://dvqqji6u78k7k" path="res://Audio/lightkeepersfx/SFX/PlyrHit.wav" id="4_nlgfb"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fwehd"]
 radius = 4.0

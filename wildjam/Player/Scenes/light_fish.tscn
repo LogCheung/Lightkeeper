@@ -120,7 +120,7 @@ shape = SubResource("CapsuleShape2D_lwfa1")
 
 [node name="PointLight2D" type="PointLight2D" parent="."]
 scale = Vector2(3, 3)
-color = Color(1, 1, 1, 0.717647)
+color = Color(1, 1, 1, 0.815686)
 energy = 4.0
 range_z_max = 512
 shadow_enabled = true
