@@ -55,7 +55,7 @@ func _ready() -> void:
 
 func _process(delta: float) -> void:
 	if gameNode.process_mode == Node.PROCESS_MODE_PAUSABLE:
-		play_song(%Swim1)
+		play_swim_song()
 		lightMeter.value -= lightDecayRate
 		if !fish.onScreen.is_on_screen():
 			pass
@@ -80,6 +80,16 @@ func on_light_collected() -> void:
 	lightMeter.value += sparkLight
 	Global.money += 1
 	pass
+
+func play_swim_song() -> void:
+	for song in get_tree().get_nodes_in_group("SWIMMUSIC"):
+		if song.playing : return
+	var rand = randi() % 2
+	match rand:
+		0:
+			play_song(swim_1)
+		1:
+			play_song(%Swim2)
 
 func play_song(song : AudioStreamPlayer2D) -> void:
 	if song.playing : return
@@ -110,7 +120,7 @@ func create_level() -> void:
 	lightMeter.value = lightMeterMax
 	
 	continueSFX.play()
-	play_song(%Swim1)
+	play_swim_song()
 	
 	gameNode.layout._ready()
 	gameNode.continuing = true
@@ -334,7 +344,6 @@ func _input(event: InputEvent) -> void:
 		%Pause.show()
 
 func _on_resume_pressed() -> void:
-	var prevState = gameNode.process_mode
 	var currentSong = get_song_playing()
 	%Pause.hide()
 	if !prevState == Node.PROCESS_MODE_WHEN_PAUSED and !%Pause.visible:
