@@ -11,12 +11,16 @@ const ROOM = preload("res://World/room.tscn")
 
 var usedRoomTiles : Array
 var fish : Fish
+var wallTiles : Array
+
 func _ready() -> void:
 	await ready
-	#get_window().content_scale_size = DisplayServer.window_get_size() / Vector2i(6,3)
 	fish = get_tree().get_first_node_in_group("FISH")
 
 func create_rooms(cornerArray : Array, endPos : Vector2,startPos : Vector2) -> void:
+	for tile in usedRoomTiles:
+		walls.set_cell(tile,0,Vector2(0,0))
+	usedRoomTiles.clear()
 	if continuing:
 		for child in roomsNode.get_children():
 			child.queue_free()
@@ -64,20 +68,28 @@ func create_rooms(cornerArray : Array, endPos : Vector2,startPos : Vector2) -> v
 			prevRoom.clear_to_start.emit()
 			usedRoomTiles.append_array(prevRoom.usedTiles)
 			prevRoom = room
-			
+		
 	prevRoom.clear_to_start.emit()
 	usedRoomTiles.append_array(prevRoom.usedTiles)
-	#
+	
 	for tile in usedRoomTiles:
-		tile = walls.local_to_map(tile)
 		walls.set_cell(tile,-1)
 	
+	cornerRoomArray = sort_corner_rooms(cornerRoomArray,cornerArray)
 	create_limit_polygon(cornerRoomArray)
 	fish.new_night.emit()
 	fish.global_position = cornerRoomArray.front().center
 	fish.boat.global_position = fish.global_position + Vector2(0,64)
 	fish.boat.visible = true
 	%Camera.global_position = cornerRoomArray.front().center
+
+func sort_corner_rooms(corRoomArray : Array[Room], trueArray : Array) -> Array[Room]:
+	var newArray : Array[Room] = []
+	for pos in trueArray:
+		for room : Room in corRoomArray:
+			if room.gridPos == pos:
+				newArray.append(room)
+	return newArray
 
 func create_limit_polygon(corRoomArray : Array[Room]) -> void:
 	for child in colShapesNode.get_children():
@@ -86,6 +98,9 @@ func create_limit_polygon(corRoomArray : Array[Room]) -> void:
 		var limPoints : Array = []
 		var curRoom = corRoomArray[i]
 		var nextRoom = corRoomArray[i+1] # next corner not just next room
+		print(curRoom.gridPos)
+		print(nextRoom.gridPos)
+		print(" ")
 		if nextRoom.global_position.x < curRoom.global_position.x:
 			limPoints.append(curRoom.topRight)
 			limPoints.append(nextRoom.topLeft)
@@ -111,6 +126,7 @@ func create_limit_polygon(corRoomArray : Array[Room]) -> void:
 		area.collision_layer = 0
 		area.collision_mask = 1
 		colShapesNode.add_child(area)
+	print("---------")
 	
 	var limShapes = colShapesNode.get_children()
 	for area : Area2D in limShapes:

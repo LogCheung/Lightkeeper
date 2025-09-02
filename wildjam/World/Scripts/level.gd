@@ -25,6 +25,7 @@ func _ready() -> void:
 		var nextCorner = Vector2(lastCorner.x + rand_len(turn_length),curCorner.y)
 		posArr.append(curCorner)
 		posArr.append(nextCorner)
+	print(posArr)
 	draw_paths(posArr)
 	for pos in posArr:
 		if pos == posArr[posArr.size()-1] or pos == posArr[0]:

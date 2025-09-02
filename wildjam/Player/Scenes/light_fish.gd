@@ -107,3 +107,4 @@ func on_new_night() -> void:
 	elif Global.nights > 6:
 		SPEED = 150
 		CAMSPEED = 105
+	boat.SPEED = SPEED - 20

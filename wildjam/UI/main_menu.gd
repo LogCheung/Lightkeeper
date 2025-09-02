@@ -3,7 +3,7 @@ extends CanvasLayer
 const BOAT = preload("res://Player/Scenes/boat.tscn")
 
 @export var lightMeterMax : float = 100
-@export var lightDecayRate : float = .0833333
+@export var lightDecayRate : float = 0   # .0833333
 @export var sparkLight : float = 60
 
 @onready var fish : Fish = get_tree().get_first_node_in_group("FISH")
@@ -130,16 +130,6 @@ func _on_quit_pressed() -> void:
 	get_tree().quit()
 
 # UPGRADE MENU
-
-var upgradeInv : Dictionary = {
-	Global.UPGRADES.LIGHTCAPACITY : 0,
-	Global.UPGRADES.LIGHTPOTENCY : 0,
-	Global.UPGRADES.LIGHTPRESERVER : 0,
-	Global.UPGRADES.MOVESPEED : 0,
-	Global.UPGRADES.STRONGERHULL : 0,
-	Global.UPGRADES.BLOWHOLE : 0,
-}
-
 var max_frame : int = 5
 var min_frame : int = 0
 func on_end_reached() -> void:
@@ -178,7 +168,7 @@ func _on_upgrade_menu_control_visibility_changed() -> void:
 func _on_buy_pressed() -> void:
 	if can_purchase_and_apply():
 		buy.play()
-		upgradeInv[prevMiddle.frame] += 1 
+		Global.upgradeInv[prevMiddle.frame] += 1 
 		Global.money -= int(cost.text)
 	else:
 		$Buyfail.play()
@@ -201,12 +191,12 @@ func can_purchase_and_apply() -> bool:
 			fish.SPEED += 15
 			
 		Global.UPGRADES.STRONGERHULL:
-			if upgradeInv[prevMiddle.frame] >= 1:
+			if Global.upgradeInv[prevMiddle.frame] >= 1:
 				return false
 			boat.max_health += 1
 			boat.health = boat.max_health
 		Global.UPGRADES.BLOWHOLE:
-			if upgradeInv[prevMiddle.frame] >= 1:
+			if Global.upgradeInv[prevMiddle.frame] >= 1:
 				return false
 			fish.blowhole = true
 	return true
@@ -227,7 +217,7 @@ func _on_scroll_left_pressed() -> void:
 	show_upgrade_info()
 
 func show_upgrade_info() -> void:
-	var cost_increase : int = 5 * upgradeInv[prevMiddle.frame]
+	var cost_increase : int = 5 * Global.upgradeInv[prevMiddle.frame]
 	%BoatsSaved.text = str(Global.boats)
 	%Money.text = str(Global.money)
 	match prevMiddle.frame:
@@ -252,9 +242,9 @@ func show_upgrade_info() -> void:
 			text = "[b]STRONGER HULL -[/b] Increases the hitpoints of lost boats by 1. One time purchase."
 		Global.UPGRADES.BLOWHOLE:
 			text = "[b]BLOWHOLE -[/b] Allows the spirit the ability to destroy oncoming projectiles or obstacles at the cost of light. One time purchase."
-			text += "\nYou have " + str(upgradeInv[prevMiddle.frame]) + "."
+			text += "\nYou have " + str(Global.upgradeInv[prevMiddle.frame]) + "."
 			itemDesc.text = text
-	text += "\n\nYou have " + str(upgradeInv[prevMiddle.frame]) + "."
+	text += "\n\nYou have " + str(Global.upgradeInv[prevMiddle.frame]) + "."
 	itemDesc.text = text
 	
 	angerMeter.value = Global.anger
@@ -297,22 +287,23 @@ func _on_quit_title_light_pressed() -> void:
 
 func _on_new_game_anger_pressed() -> void:
 	continueSFX.play()
-	angerLose.hide()
 	reload_default()
 	create_level()
+	anim.play("NewGame")
 	upgrade_menu_control.show()
 
 func _on_new_game_light_pressed() -> void:
 	continueSFX.play()
-	lightLose.hide()
 	reload_default()
 	create_level()
+	anim.play("NewGame")
 	upgrade_menu_control.show()
 
 func reload_default() -> void:
 	Global.money = 0
 	Global.boats = 0
 	Global.anger = 0
+	Global.nights = 0
 	Global.redempCounter = 5
 	Global.redempMax = 5
 	gameNode.layout.height = 20
@@ -342,6 +333,11 @@ func _input(event: InputEvent) -> void:
 		%PauseMenuSong.play()
 		$PauseSFX.play()
 		%Pause.show()
+	
+	if event.is_action_released("ui_accept"):
+		Global.nights += 1
+		gameNode.layout.height += 1
+		create_level()
 
 func _on_resume_pressed() -> void:
 	var currentSong = get_song_playing()
@@ -364,3 +360,35 @@ func _on_quit_pause_pressed() -> void:
 func _on_back_pressed() -> void:
 	$Select2.play()
 	%Settings.hide()
+
+# Saves
+func _on_save_pressed() -> void:
+	var scene = PackedScene.new()
+	scene.pack(owner)
+	SaveLoad._save(scene)
+
+func _on_load_pressed() -> void:
+	SaveLoad._load()
+	_on_new_game_pressed()
+	load_upgrades()
+
+func load_upgrades() -> void:
+	# Capacity
+	lightMeterMax = 100 + (15 * Global.upgradeInv[Global.UPGRADES.LIGHTCAPACITY])
+	lightMeter.value = lightMeterMax
+	# Potency
+	maxLightScale = Vector2(5.0,5.0) + Vector2(.2,.2) * Global.upgradeInv[Global.UPGRADES.LIGHTPOTENCY]
+	sparkLight = 60 + (5 * Global.upgradeInv[Global.UPGRADES.LIGHTPOTENCY])
+	# Preserver
+	lightDecayRate = .0833333
+	for i in range(Global.upgradeInv[Global.UPGRADES.LIGHTPRESERVER]):
+		lightDecayRate *= .9
+	# Movespeed
+	fish.on_new_night() # sets fish to default speed
+	fish.SPEED += 15 * Global.upgradeInv[Global.UPGRADES.MOVESPEED]
+	# Stronger hull
+	if Global.upgradeInv[prevMiddle.frame] >= 1:
+		boat.max_health = 4
+	# Blowhole
+	if Global.upgradeInv[prevMiddle.frame] >= 1:
+		fish.blowhole = true

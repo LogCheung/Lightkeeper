@@ -5,7 +5,7 @@ extends HSlider
 var bus_index : int
 
 func _ready() -> void:
-	value = .7
+	value = .5
 	bus_index = AudioServer.get_bus_index(bus_name)
 	value_changed.connect(on_value_changed)
 

@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="SaveDataResource" load_steps=2 format=3 uid="uid://fdttg0256dke"]
+
+[ext_resource type="Script" uid="uid://b5c28rkwaqcbs" path="res://Saves/SaveData.gd" id="1_0id4a"]
+
+[resource]
+script = ExtResource("1_0id4a")
+money = 6
+boats = 0
+anger = 1
+nights = 1
+redempCounter = 5
+redempMax = 5

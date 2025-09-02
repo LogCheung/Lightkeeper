@@ -105,7 +105,7 @@ motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_n3lqq")
 SPEED = 150.0
-CAMSPEED = 105.0
+CAMSPEED = 300.0
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 self_modulate = Color(0.473976, 0.473976, 0.473976, 1)
