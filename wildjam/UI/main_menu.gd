@@ -3,7 +3,7 @@ extends CanvasLayer
 const BOAT = preload("res://Player/Scenes/boat.tscn")
 
 @export var lightMeterMax : float = 100
-@export var lightDecayRate : float = 0   # .0833333
+@export var lightDecayRate : float = .0833333
 @export var sparkLight : float = 60
 
 @onready var fish : Fish = get_tree().get_first_node_in_group("FISH")
@@ -58,7 +58,6 @@ func _process(delta: float) -> void:
 		play_swim_song()
 		lightMeter.value -= lightDecayRate
 		if !fish.onScreen.is_on_screen():
-			pass
 			lightMeter.value -= lightDecayRate
 		
 		if abs(lightMeter.value - 30) <= 1 :
