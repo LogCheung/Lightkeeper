@@ -4,7 +4,7 @@ const BOAT = preload("res://Player/Scenes/boat.tscn")
 
 @export var lightMeterMax : float = 100
 @export var lightDecayRate : float = .0833333
-@export var sparkLight : float = 60
+@export var sparkLight : float = 70
 
 @onready var fish : Fish = get_tree().get_first_node_in_group("FISH")
 @onready var boat : Boat = get_tree().get_first_node_in_group("BOAT")
@@ -377,7 +377,7 @@ func load_upgrades() -> void:
 	lightMeter.value = lightMeterMax
 	# Potency
 	maxLightScale = Vector2(5.0,5.0) + Vector2(.2,.2) * Global.upgradeInv[Global.UPGRADES.LIGHTPOTENCY]
-	sparkLight = 60 + (5 * Global.upgradeInv[Global.UPGRADES.LIGHTPOTENCY])
+	sparkLight = 70 + (5 * Global.upgradeInv[Global.UPGRADES.LIGHTPOTENCY])
 	# Preserver
 	lightDecayRate = .0833333
 	for i in range(Global.upgradeInv[Global.UPGRADES.LIGHTPRESERVER]):
