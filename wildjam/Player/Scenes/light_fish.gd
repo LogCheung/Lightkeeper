@@ -3,8 +3,8 @@ class_name Fish
 
 const BULLET = preload("res://Player/Scenes/bullet.tscn")
 
-@export var SPEED : float = 200.0
-@export var CAMSPEED : float = 100
+@export var SPEED : float = 120
+@export var CAMSPEED : float = 75
 @export var extraSpeed : float = 50
 @export var currentRoom : Room
 @export var currentDirection : Room.DIRECTION
@@ -99,12 +99,12 @@ func catch_light() -> void:
 
 func on_new_night() -> void:
 	if Global.nights < 3:
-		SPEED = 120
-		CAMSPEED = 75
+		SPEED = 125
+		CAMSPEED = 85
 	elif Global.nights < 6:
-		SPEED = 135
-		CAMSPEED = 90
+		SPEED = 140
+		CAMSPEED = 100
 	elif Global.nights > 6:
-		SPEED = 150
-		CAMSPEED = 105
+		SPEED = 155
+		CAMSPEED = 115
 	boat.SPEED = SPEED - 20
