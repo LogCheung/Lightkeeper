@@ -17,10 +17,10 @@ Link to Game: https://spiralking.itch.io/lightkeeper <br/>
 - Auto Scroller System
 - Room Variations
   - Seamless Transition between rooms (player should barely be able to tell end of a room)
-  - 10 Easy Variety
-  - 10 Medium Variety
-  - 10 Difficult Variety
-  - 10 Light Particle rooms
+  - 10 Easy Variety (low density of obstacles)
+  - 10 Medium Variety (medium density, some hazards)
+  - 10 Difficult Variety (high density of obstacles and hazards)
+  - 10 Light Particle rooms (light particle route, but routes allowed to bypass light)
   - Projectiles
     - Tracking Projectiles
     - Directional Projectiles
