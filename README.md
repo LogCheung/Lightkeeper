@@ -15,7 +15,12 @@ Link to Game: https://spiralking.itch.io/lightkeeper <br/>
   - Spirit emits light based on fullness of light meter
 - Boat Movement Mirroring
 - Auto Scroller System
-- 40 Room Variations with Varying Difficulty
+- Room Variations
+  - Seamless Transition between rooms (player should barely be able to tell end of a room)
+  - 10 Easy Variety
+  - 10 Medium Variety
+  - 10 Difficult Variety
+  - 10 Light Particle rooms
   - Projectiles
     - Tracking Projectiles
     - Directional Projectiles
