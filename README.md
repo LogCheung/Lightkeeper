@@ -1,12 +1,18 @@
 # Lightkeeper
 As a light spirit, guide lost boats toward the lighthouse. Manage your light energy, collect light particles, traverse the dark night through obstacles and the
 ocean's dangers without endangering the fishermen following you. <br/> <br/>
-https://github.com/user-attachments/assets/0e3e8b4d-680a-4b25-83f3-a49a621f7292
+
+
+
+
+https://github.com/user-attachments/assets/b78af2ae-b554-4b4a-85a3-ab7ccf4968bc
+
+
 This project is completed. <br/>
 Link to Game: https://spiralking.itch.io/lightkeeper <br/>
 # Contributions
-- Programming : Logan Cheung
-- Art & Music & Sound : Micah Rodriguez <br/>
+- Programming / Design: Logan Cheung
+- Art & Music & Sound / Design : Micah Rodriguez <br/>
 # Design Goals
 - Endless runner with options for upgrades in between nights
 - Use lighting system to bring setting to life and improve game feel
